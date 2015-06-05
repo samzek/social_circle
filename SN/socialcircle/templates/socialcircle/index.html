@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+
+<style>
+    body {
+        background-image: url(https://putyourheartonpaper.files.wordpress.com/2015/01/circle-of-life.jpg);
+}
+    h1 {
+        color: greenyellow;
+        font-family: "Great Vibes", cursive;
+        font-size: 50px;
+        font-weight: normal;
+        margin-bottom: 0px;
+        margin-top:40px;
+        text-align: right;
+        text-shadow:0 1px 1px #fff;
+}
+</style>
+
+<h1 class="h1">Social circle</h1>
+<form  method="POST">
+    {% csrf_token %}
+    <div class="circular_small">
+        <p>
+
+        <br>Username:
+        <input type="text" name="username">
+        Password:
+        <input type="text" name="password"><br><br>
+        <input type="submit" name="log_in" value="Log in">
+        </p>
+
+    </div>
+</form>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="circular_small">
+        <br><br><br>
+        <input type="submit" name="sign" value="Sign in"/>
+    </div>
+</form>

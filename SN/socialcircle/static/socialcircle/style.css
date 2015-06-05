@@ -5,5 +5,17 @@
     width: 400px;
     height: 400px;
     float: right;
+}
+.circular_small {
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-color: wheat;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    float: none;
+    font-size:30px;
+    line-height:40px;
+    text-align:center
 
 }
