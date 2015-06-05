@@ -89,4 +89,4 @@ class Like (models.Model):
     like_user = models.ForeignKey(SCUser)
     like_post = models.ForeignKey(Post)
     def __unicode__(self):
-        return self.like_date
+        return unicode(self.like_date) + " | "+ self.like_user.username
