@@ -18,7 +18,7 @@ def index(request):
             if user is not None:
                 if user.is_active:
                     login(request,user)
-                    return render(request,'socialcircle/profile.html/',{'scuser':user})
+                    return HttpResponseRedirect('/socialcircle/profile/%s/' %user.id)
                 else:
                     return render(request,'socialcircle/index.html')
             else:
