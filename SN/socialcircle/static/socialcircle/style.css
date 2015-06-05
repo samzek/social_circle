@@ -2,8 +2,36 @@
     background-repeat: no-repeat;
     background-position: 50%;
     border-radius: 50%;
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: 350px;
     float: right;
+}
 
+@media (min-width: 48em) {
+    .content {
+        margin-left: 25%;
+    }
+
+    .banner {
+        margin-bottom: 30%;
+        width: 100%
+    }
+
+    .header {
+        margin: 80% 2em 0;
+        text-align: right;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+    }
+}
+.sidebar {
+    background-color: greenyellow;
+}
+
+.banner{
+    background-color: khaki;
 }

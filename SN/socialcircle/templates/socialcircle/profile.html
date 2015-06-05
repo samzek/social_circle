@@ -5,7 +5,11 @@
 <div class="sidebar pure-u-1 pure-u-md-1-4">
     <div class="header">
         <h1>THIS IS A TEST</h1>
-        <p>Insert friends here</p>
+
+        {% for i in scuser.user.all %}
+            <a href="/socialcircle/profile/{{ i.id }}/"  >{{ i }}</a>
+        {% endfor %}
+
         <p>Insert possible friends here</p>
 
     </div>
@@ -26,8 +30,14 @@
 
         <div class="circular" style = 'background-image: url("http://bridgesprep.org/wp-content/uploads/2013/10/Facebook-no-profile-picture-icon-620x389.jpg")'></div>
     </div>
+
+
+    {% for i in scuser.post_set.all %}
+        <p> {{ i }} | category : {{ i.post_cat }} </p>
+
+    {% endfor %}
+
+
+
 </div>
-
-
-
 
