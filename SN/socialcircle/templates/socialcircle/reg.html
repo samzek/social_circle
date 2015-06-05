@@ -17,23 +17,12 @@
 }
 </style>
 
-<h1 class="h1">Social circle</h1>
-<form  method="POST">
-    {% csrf_token %}
-    <div class="circular_small">
-        <p>
-        <br><label>Username:</label>
-        <input type="text" name="username">
-        <label>Password:</label>
-        <input type="password" name="password"><br><br>
-        <input type="submit" name="log_in" value="Log in">
-        </p>
+<h1>Sign in</h1>
 
-    </div>
-</form>
 <form method="POST">
     {% csrf_token %}
-        <br><br><br>
-        <input class="menu" type="submit" name="sign" value="Sign in"/>
-</form>
 
+    {{ form.as_p }}
+
+    <input type="submit" value="Save" />
+</form>

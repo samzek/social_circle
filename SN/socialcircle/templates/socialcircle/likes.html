@@ -1,0 +1,15 @@
+<h1>Posts that you liked</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Indietro">
+</form>
+
+{% for i in scuser.like_set.all %}
+
+    <p> {{ i.like_post }} | category : {{ i.like_post.post_cat }} </p>
+
+{% endfor %}
+
+
+

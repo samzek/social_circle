@@ -11,5 +11,6 @@ urlpatterns = [
         url(r'^profile/(?P<scuser_id>[0-9]+)/photos/$', views.photos,name='photos'),
         url(r'^profile/(?P<scuser_id>[0-9]+)/videos/$', views.videos,name='videos'),
         url(r'^profile/(?P<scuser_id>[0-9]+)/likes/$', views.likes,name='likes'),
+        url(r'^reg/$',views.reg,name='reg')
 ]
 

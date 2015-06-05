@@ -1,0 +1,9 @@
+<h1>Modify your personal information</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <input type="submit" value="Save" />
+</form>
