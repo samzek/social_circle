@@ -4,7 +4,7 @@
     border-radius: 50%;
     width: 350px;
     height: 350px;
-    float: right;
+
 }
 .circular_small {
     display: block;
@@ -25,7 +25,6 @@
     }
 
     .banner {
-        margin-bottom: 30%;
         width: 100%
     }
 
