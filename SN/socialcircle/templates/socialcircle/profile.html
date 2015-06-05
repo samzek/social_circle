@@ -2,19 +2,31 @@
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
 
 
+<div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="header">
+        <h1>THIS IS A TEST</h1>
+        <p>Insert friends here</p>
+        <p>Insert possible friends here</p>
 
-<h1>{{scuser.first_name }} {{scuser.last_name }}</h1>
+    </div>
+</div>
 
-<form  method="POST">
-    {% csrf_token %}
-    <input type="submit" name="photos" value="Photos">
-    <input type="submit" name="videos" value="Videos">
-    <input type="submit" name="likes" value="Likes">
-    <input type="submit" name="settings" value="Settings">
-</form>
+<div class="content">
+    <div class="banner">
 
-<div class="circular" style = 'background-image: url(https://avatars2.githubusercontent.com/u/11322190?v=3&s=460)'></div>
+        <h1>{{scuser.first_name }} {{scuser.last_name }}</h1>
 
+        <form  method="POST">
+            {% csrf_token %}
+            <input type="submit" name="photos" value="Photos">
+            <input type="submit" name="videos" value="Videos">
+            <input type="submit" name="likes" value="Likes">
+            <input type="submit" name="settings" value="Settings">
+        </form>
+
+        <div class="circular" style = 'background-image: url("http://bridgesprep.org/wp-content/uploads/2013/10/Facebook-no-profile-picture-icon-620x389.jpg")'></div>
+    </div>
+</div>
 
 
 
