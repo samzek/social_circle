@@ -1,32 +1,60 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/CircularNavigation/css/component1.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/CircularNavigation/css/demo.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/CircularNavigation/css/normalize.css' %}"/>
+<script src="/static/socialcircle/CircularNavigation/js/modernizr-2.6.2.min.js"></script>
 
-<section id="left">
-    <div class="sidebar pure-u-1 pure-u-md-1-4" style="background-color: #ffffff">
-        <div class="banner" style="background-color: white">
-            <form method="POST">
-                {% csrf_token %}
-                <center><input type="image" src="/static/socialcircle/images/unknow_user_small.jpg"
-                               name="profile_ref" value="Profile"
-                               class="circular" style="width: 220px;height: 220px;cursor: hand"></center>
-            </form>
-            <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label>
+<body>
+<div class="container">
+    <section id="left">
+        <div class="sidebar pure-u-1 pure-u-md-1-4" style="background-color: rgba(0,0,0,0.01)">
+            <div class="banner" style="background-color: rgba(0,0,0,0.01)">
+                <form method="POST">
+                    {% csrf_token %}
+                    <center><input type="image" src="/static/socialcircle/images/unknow_user_small.jpg"
+                                   name="profile_ref" value="Profile"
+                                   class="circular" style="width: 220px;height: 220px;cursor: hand"></center>
+                </form>
+                <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
 
-            <p>Insert possible friends here</p>
+                <label class="name_style" style="font-size: 10px">Insert possible friends here</label>
 
+            </div>
         </div>
+    </section>
+    <section id="center" style="margin-top: 0">
+        {% for i in post %}
+            <p><label class="name_style">{{ i }}</label></p><br><br><br><br><br><br><br><br><br>
+        {% endfor %}
+    </section>
+    <section id="right">
+        <form method="POST">
+            {% csrf_token %}
+            <br><br>
+            <input type="submit" class="circular_small" name="logout" value="Logout" style="height: 100px;width: 100px">
+        </form>
+    </section>
+     <div class="component">
+        <!-- Start Nav Structure -->
+        <button class="cn-button" id="cn-button">+</button>
+            <div class="cn-wrapper" id="cn-wrapper">
+                <form method="POST">
+                 {% csrf_token %}
+                <ul>
+                    <li><a><span><img src="/static/socialcircle/images/chat_small.png"></span></a></li>
+                    <li><a><span><img src="/static/socialcircle/images/video_small.png"></span></a></li>
+                    <li><a><span><img src="/static/socialcircle/images/text_small.png"></span></a></li>
+                    <li><a><span><img src="/static/socialcircle/images/camera_small.png"></span></a></li>
+                    <li><a><span><input type="image" src="/static/socialcircle/images/logout_small.png"
+                        name="logout_menu" ></span></a></li>
+                </ul>
+                </form>
+            </div>
+        <div id="cn-overlay" class="cn-overlay"></div>
+                    <!-- End Nav Structure -->
     </div>
-</section>
-<section id="center" style="margin-top: 0">
-    {% for i in post %}
-        <p> {{ i }} </p>
-    {% endfor %}
-</section>
-<section id="right">
-    <form method="POST">
-        {% csrf_token %}
-        <br><br>
-        <input type="submit" class="menu" name="logout" value="Logout" style="height: 100px;width: 100px;
-                background-color: #ffffff;">
-    </form>
-</section>
+</div>
+    <script src="/static/socialcircle/CircularNavigation/js/polyfills.js"></script>
+    <script src="/static/socialcircle/CircularNavigation/js/demo1.js"></script>
+</body>

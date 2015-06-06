@@ -40,7 +40,7 @@ def reg(request):
         form = modifyUser()
     return render_to_response('socialcircle/reg.html', {'form': form}, context_instance=RequestContext(request))
 
-@decorators.login_required
+@decorators.login_required(login_url='/socialcircle/')
 def dash(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
     friends = []
@@ -49,14 +49,16 @@ def dash(request,scuser_id):
         friends.append(i)
         for k in Post.objects.filter(post_user=i)[:]:
             post.append(k)
-    print post
+    #print post
     if request.method == 'POST':
-        if "logout" in request.POST:
+        if "logout" in request.POST or "logout_menu" in request.POST:
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
         else:
             return HttpResponseRedirect('/socialcircle/profile/%s/' %user.id)
+
     return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post})
+
 def profile(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
 
