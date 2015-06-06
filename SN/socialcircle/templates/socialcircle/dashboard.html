@@ -1,1 +1,32 @@
-<h1>Dashboard</h1>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+
+<section id="left">
+    <div class="sidebar pure-u-1 pure-u-md-1-4" style="background-color: #ffffff">
+        <div class="banner" style="background-color: white">
+            <form method="POST">
+                {% csrf_token %}
+                <center><input type="image" src="/static/socialcircle/images/unknow_user_small.jpg"
+                               name="profile_ref" value="Profile"
+                               class="circular" style="width: 220px;height: 220px;cursor: hand"></center>
+            </form>
+            <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label>
+
+            <p>Insert possible friends here</p>
+
+        </div>
+    </div>
+</section>
+<section id="center" style="margin-top: 0">
+    {% for i in post %}
+        <p> {{ i }} </p>
+    {% endfor %}
+</section>
+<section id="right">
+    <form method="POST">
+        {% csrf_token %}
+        <br><br>
+        <input type="submit" class="menu" name="logout" value="Logout" style="height: 100px;width: 100px;
+                background-color: #ffffff;">
+    </form>
+</section>

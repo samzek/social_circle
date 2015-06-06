@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,render_to_response,RequestContext
 from django.http import HttpRequest,HttpResponseRedirect, HttpResponse
-from django.contrib.auth import authenticate,login,hashers
+from django.contrib.auth import authenticate,login,hashers,decorators,logout
 from .models import SCUser,Post,Like,Cat
 
 from django.core.urlresolvers import reverse
@@ -18,7 +18,7 @@ def index(request):
             if user is not None:
                 if user.is_active:
                     login(request,user)
-                    return HttpResponseRedirect('/socialcircle/profile/%s/' %user.id)
+                    return HttpResponseRedirect('/socialcircle/dash/%s/' %user.id)
                 else:
                     return render(request,'socialcircle/index.html')
             else:
@@ -40,8 +40,23 @@ def reg(request):
         form = modifyUser()
     return render_to_response('socialcircle/reg.html', {'form': form}, context_instance=RequestContext(request))
 
+@decorators.login_required
 def dash(request,scuser_id):
-    return render(request,'socialcircle/dashboard.html')
+    user = get_object_or_404(SCUser,pk=scuser_id)
+    friends = []
+    post = []
+    for i in SCUser.objects.filter(user=scuser_id)[:]:
+        friends.append(i)
+        for k in Post.objects.filter(post_user=i)[:]:
+            post.append(k)
+    print post
+    if request.method == 'POST':
+        if "logout" in request.POST:
+            logout(request)
+            return HttpResponseRedirect('/socialcircle/')
+        else:
+            return HttpResponseRedirect('/socialcircle/profile/%s/' %user.id)
+    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post})
 def profile(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
 
@@ -64,7 +79,7 @@ def settings(request,scuser_id):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
-    else:  # GET request: just visualize the form
+    else:
         form = modifyUser(instance=user)
     return render(request, 'socialcircle/settings.html', {'form': form,})
 

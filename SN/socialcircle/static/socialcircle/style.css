@@ -56,8 +56,31 @@
     line-height:100px;
     text-align:center;
     text-decoration:none;
-    background-color: antiquewhite}
-.menu:hover{
+    background-color: antiquewhite
+}
+.menu:hover {
     color:#ccc;
     text-decoration:none;
-    background:#333}
+    background:#333
+}
+#left {
+	width: 32%;
+	float: left;
+	padding: 5px 15px;
+}
+#center {
+	width: 32%;
+	float: left;
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: 25%;
+}
+#right {
+	width: 16%;
+	float: right;
+}
+.name_style {
+    font-family: italic;
+    font-size: 30px;
+}
+

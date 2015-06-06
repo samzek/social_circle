@@ -22,7 +22,49 @@
 <form method="POST">
     {% csrf_token %}
 
-    {{ form.as_p }}
+    <section id="left">
+    <div class="circular_small">
+        <br>
+        {{ form.first_name.errors }}
+        <label for="{{ form.first_name.id_for_label }}">First name</label>
+        {{ form.first_name }}<br>
+        {{ form.last_name.errors }}
+        <label for="{{ form.last_name.id_for_label }}">Last name</label>
+        {{ form.last_name }}<br>
+    </div>
+    <div class="circular_small">
+        <br>
+        {{ form.username.errors }}
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}<br>
+        {{ form.password.errors }}
+        <label for="{{ form.passwod.id_for_label }}">Password</label>
+        {{ form.password }}<br>
+    </div>
+    </section>
+    <section id="center">
+        <input class="menu" type="submit" value="Save" style="margin-right: auto;margin-left: auto;width: 150px;
+        height: 150px;"/>
+    </section>
 
-    <input type="submit" value="Save" />
+    <section id="right">
+    <div class="circular_small">
+        <br><br>
+        {{ form.email.errors }}
+        <label for="{{ form.email.id_for_label }}">Email</label>
+        {{ form.email }}
+    </div>
+
+    <div class="circular_small" style="line-height: 35px">
+        {{ form.birth_date.errors }}
+        <label for="{{ form.birth_date.id_for_label }}">Birth_date</label>
+        {{ form.birth_date }}
+        {{ form.address.errors }}
+        <label for="{{ form.address.id_for_label }}">Address</label>
+        {{ form.address }}<br>
+        {{ form.user_bio.errors }}
+        <label for="{{ form.user_bio.id_for_label }}">Bio</label><br>
+        {{ form.user_bio }}
+    </div>
+    </section>
 </form>
