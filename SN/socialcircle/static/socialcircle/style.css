@@ -21,7 +21,7 @@
 
 @media (min-width: 48em) {
     .content {
-        margin-left: 25%;
+        margin-left: 21%;
     }
 
     .banner {
@@ -35,6 +35,8 @@
 
     .sidebar {
         position: fixed;
+
+        width: 20%;
         top: 0;
         bottom: 0;
     }
@@ -43,9 +45,7 @@
     background-color: greenyellow;
 }
 
-.banner{
-    background-color: khaki;
-}
+
 .menu {
     display:block;
     width:220px;
@@ -72,12 +72,8 @@
 	width: 32%;
 	float: left;
 	margin-left: auto;
-    margin-right: auto;
+    margin-right: 0;
     margin-top: 25%;
-}
-#right {
-	width: 16%;
-	float: right;
 }
 .name_style {
     font-family: italic;
@@ -85,3 +81,13 @@
     color: #000000;
 }
 
+body {
+  background: #f06060;
+
+}
+
+.dash-home{
+    margin-top: 10px;
+    margin-bottom: 50px;
+    text-align: center;
+}

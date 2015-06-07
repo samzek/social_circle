@@ -1,15 +1,41 @@
-<h1>Posts that you liked</h1>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="submit" value="Indietro">
-</form>
+<div class="sidebar">
+    <div class="dash-home">
+        <form method="POST">
+            {% csrf_token %}
+                <input type="image" src="/static/socialcircle/images/back.png" name="back" value="Back" style="width: 48px;height: 48px;">
+        </form>
+    </div>
+    <div class="header">
+        <h2>POSTS YOU LIKED</h2>
+    </div>
+</div>
 
-{% for i in scuser.like_set.all %}
+<div class="content">
+    <div id="posts" style="margin-top: 5%">
+        {% for i in post_liked %}
+            <div class="post">
+                <div class="entry">
+                    <div style="margin-bottom: -3px;">
+                        <div class="quote">
+                            {{ i.like_post }}
+                        </div>
+                    </div>
+                    <div class="options">
+                        <form  method="POST">
+                            {% csrf_token %}
+                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike" value="Unlike" style="width: 15px;height: 15px;">
+                        </form>
 
-    <p> {{ i.like_post }} | category : {{ i.like_post.post_cat }} </p>
-
-{% endfor %}
-
-
-
+                    </div>
+                </div>
+                <div class="stats">
+                    Liked on {{ i.like_date }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
