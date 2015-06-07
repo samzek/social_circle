@@ -47,14 +47,15 @@ def dash(request,scuser_id):
     post = []
     for i in SCUser.objects.filter(user=scuser_id)[:]:
         friends.append(i)
-        for k in Post.objects.filter(post_user=i)[:]:
-            post.append(k)
-    #print post
+        for k in Post.objects.filter(post_user=i.pk)[:]:
+            dict = (i.username,k.post_date,k.content)
+            post.append(dict)
+        post.reverse()
     if request.method == 'POST':
         if "logout" in request.POST or "logout_menu" in request.POST:
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
-        else:
+        elif "profile_ref" in request.POST:
             return HttpResponseRedirect('/socialcircle/profile/%s/' %user.id)
 
     return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post})

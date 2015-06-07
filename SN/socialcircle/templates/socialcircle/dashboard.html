@@ -24,8 +24,13 @@
         </div>
     </section>
     <section id="center" style="margin-top: 0">
-        {% for i in post %}
-            <p><label class="name_style">{{ i }}</label></p><br><br><br><br><br><br><br><br><br>
+        {% for tuple in post %}
+            {%  for el in tuple %}
+            <p>
+                <label class="name_style">{{ el }}</label><br>
+            </p>
+            {% endfor %}
+        <br><br><br><br><br><br><br><br><br>
         {% endfor %}
     </section>
     <section id="right">
@@ -44,7 +49,8 @@
                 <ul>
                     <li><a><span><img src="/static/socialcircle/images/chat_small.png"></span></a></li>
                     <li><a><span><img src="/static/socialcircle/images/video_small.png"></span></a></li>
-                    <li><a><span><img src="/static/socialcircle/images/text_small.png"></span></a></li>
+                    <li><a><span><input type="image" src="/static/socialcircle/images/text_small.png" onclick="myfunction()">
+                            </span></a></li>
                     <li><a><span><img src="/static/socialcircle/images/camera_small.png"></span></a></li>
                     <li><a><span><input type="image" src="/static/socialcircle/images/logout_small.png"
                         name="logout_menu" ></span></a></li>
@@ -57,4 +63,10 @@
 </div>
     <script src="/static/socialcircle/CircularNavigation/js/polyfills.js"></script>
     <script src="/static/socialcircle/CircularNavigation/js/demo1.js"></script>
+    <script>
+        function myfunction(){
+            var post = window.prompt("insert your post: ");
+        }
+    </script>
 </body>
+
