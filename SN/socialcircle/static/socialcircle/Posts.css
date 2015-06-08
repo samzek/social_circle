@@ -12,7 +12,7 @@ z-index: 777;
 
 #posts {
     top: 10px;
-    position: absolute;
+    position: relative;
     margin-left: 20%;
 }
 
