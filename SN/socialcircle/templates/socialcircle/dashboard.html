@@ -37,10 +37,10 @@
         </div>
     </section>
     <div class="content">
-        <div id="posts">
+        <div id="posts" style="z-index: 0;">
             {% for p,u in post %}
                 <div class="post">
-			        <div class="entry">
+			        <div class="entry"> 
 				        <div style="margin-bottom: -3px;">
 					        <div class="quote">
                                 <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}">{{ u.username }}</a><br><br>
@@ -88,13 +88,13 @@
                         <!-- End Nav Structure -->
     </div>
 
-    <div id="loginScreen">
+    <div id="loginScreen" >
 	<center>
 	<p><label class="name_style"> Insert a post :D</label></p>
         <br><br><br><br>
 
         <form method="POST">
-                {% csrf_token %}
+            {% csrf_token %}
             <p><input type = "text" name="text_post" value=""></p>
             <p>
                 <input type = "submit" name="submit_text" value = "Submit" >
@@ -108,7 +108,6 @@
     <div id="cover" >
     </div>
 </div>
-
     <script src="/static/socialcircle/CircularNavigation/js/polyfills.js"></script>
     <script src="/static/socialcircle/CircularNavigation/js/demo1.js"></script>
 
