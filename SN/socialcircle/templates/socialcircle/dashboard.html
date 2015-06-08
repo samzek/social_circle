@@ -20,12 +20,10 @@
             </div>
 
             <center>
-                <form method="POST">
-                    {% csrf_token %}
-                    <input type="image" src="/static/socialcircle/images/unknow_user_small.jpg"
-                                   name="profile_ref" value="Profile"
-                                   class="circular" style="width: 220px;height: 220px;cursor: hand">
-                </form>
+                    <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
+                        <img src="/static/socialcircle/images/unknow_user_small.jpg" class="circular"
+                             style="width: 220px;height: 220px;cursor: hand">
+                    </a>
                 <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
 
                 <label class="name_style" style="font-size: 10px">Insert possible friends here</label>
@@ -35,12 +33,14 @@
     </section>
     <div class="content">
         <div id="posts">
-            {% for p in post %}
+            {% for p,u in post %}
                 <div class="post">
 			        <div class="entry">
 				        <div style="margin-bottom: -3px;">
 					        <div class="quote">
-						        {{ p }}
+                                <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}">{{ u.username }}</a><br><br>
+						        {{ p.content }}<br>
+                                <br>
 					        </div>
 				        </div>
                         <div class="options">
@@ -63,7 +63,7 @@
             {% endfor %}
         </div>
     </div>
-         <div class="component">
+    <div class="component">
             <!-- Start Nav Structure -->
             <button class="cn-button" id="cn-button">+</button>
                 <div class="cn-wrapper" id="cn-wrapper">
@@ -81,7 +81,6 @@
                 </div>
             <div id="cn-overlay" class="cn-overlay"></div>
                         <!-- End Nav Structure -->
-        </div>
     </div>
 </div>
     <script src="/static/socialcircle/CircularNavigation/js/polyfills.js"></script>

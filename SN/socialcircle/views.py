@@ -43,15 +43,15 @@ def reg(request):
 @decorators.login_required(login_url='/socialcircle/')
 def dash(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
-    friends = []
     post = []
     for i in SCUser.objects.filter(user=scuser_id)[:]:
-        friends.append(i)
-        for k in Post.objects.filter(post_user=i)[:].order_by('-post_date')[:]:
-            post.append(k)
+        for k in Post.objects.filter(post_user=i.pk)[:].order_by('-post_date')[:5]:
+            tupla = (k,i)
+            post.append(tupla)
 
-    for i in user.post_set.order_by('-post_date')[:]:
-        post.append(i)
+  #  for i in user.post_set.order_by('-post_date')[:]:
+   #     post.append(i)
+
 
     post_liked = []
     for i in xrange(len(user.like_set.values())):
@@ -63,7 +63,7 @@ def dash(request,scuser_id):
         if "logout" in request.POST or "logout_menu" in request.POST:
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
-        elif "profile" in request.POST or "profile_ref" in request.POST:
+        elif "profile" in request.POST:
             return HttpResponseRedirect('/socialcircle/profile/%s/' %user.id)
         elif "like_post" in request.POST:
             #sel_post = user.post_set.get(pk=request.POST['like_post'])
