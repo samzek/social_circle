@@ -39,8 +39,21 @@
             {% csrf_token %}
             <input type="image" src="/static/socialcircle/images/camera.png" name="photos" value="Photos">
             <input type="image" src="/static/socialcircle/images/video.png" name="videos" value="Videos">
-            <input type="image" src="/static/socialcircle/images/heart.png" name="likes" value="Likes">
-            <input type="image" src="/static/socialcircle/images/settings.png" name="settings" value="Settings">
+
+            {% if scuser.id == curr_user.id %}
+                <input type="image" src="/static/socialcircle/images/heart.png" name="likes" value="Likes">
+                <input type="image" src="/static/socialcircle/images/settings.png" name="settings" value="Settings">
+            {% else %}
+                {% if scuser.id in friends %}
+                    <input type="image" src="/static/socialcircle/images/del_friend.png" name="del_friend" value="{{ scuser.id }}">
+                {% else %}
+                    <input type="image" src="/static/socialcircle/images/add.png" name="add" value="{{ scuser.id }}">
+                {% endif %}
+                <input type="image" src="/static/socialcircle/images/chat.png" name="chat" value="{{ scuser.id }}">
+
+            {% endif %}
+
+
         </form>
 
 
@@ -66,7 +79,13 @@
                                 {% else %}
                                 <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
                             {% endif %}
-                            <input type="image" src="/static/socialcircle/images/delete.png" name="delete_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                            {% if scuser.id == curr_user.id %}
+                                <input type="image" src="/static/socialcircle/images/delete.png" name="delete_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                            {% else %}
+                                <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                            {% endif %}
+
+
                         </form>
                         </div>
 			        </div>

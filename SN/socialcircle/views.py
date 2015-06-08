@@ -49,8 +49,9 @@ def dash(request,scuser_id):
             tupla = (k,i)
             post.append(tupla)
 
-  #  for i in user.post_set.order_by('-post_date')[:]:
-   #     post.append(i)
+    for i in user.post_set.order_by('-post_date')[:]:
+        tupla= (i,user)
+        post.append(tupla)
 
 
     post_liked = []
@@ -77,11 +78,24 @@ def dash(request,scuser_id):
             return render(request,'socialcircle/dashboard.html',{'scuser':user, 'post': post, 'post_liked' : post_liked} ) #FIXME non me gusta molto che ricarica tutta la pag
         elif "share" in request.POST:
             pass
+        elif "submit_text" in request.POST:
+            cat = Cat.objects.get(pk=1)
+            u = SCUser.objects.get(pk=request.user.id)
+            new_post = Post.objects.create(content=request.POST['text_post'],is_photo=False,is_video=False, is_text=True,post_cat=cat)
+            new_post.post_user.add(u)
+            new_post.save()
+            return HttpResponseRedirect('')
+
 
     return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked})
 
 def profile(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
+
+
+    friend_list = []
+    for i in SCUser.objects.filter(user=request.user.id)[:]:
+        friend_list.append(i.pk)
 
     post_liked = []
     for i in xrange(len(user.like_set.values())):
@@ -89,6 +103,8 @@ def profile(request,scuser_id):
 
 
     post_orderd = user.post_set.order_by('-post_date')[:]
+
+    data = {'scuser':user, 'post': post_orderd, 'post_liked' : post_liked, 'curr_user':request.user, 'friends':friend_list}
 
     if request.method == 'POST':
         if "photos" in request.POST:
@@ -100,7 +116,7 @@ def profile(request,scuser_id):
         elif "likes" in request.POST:
             return HttpResponseRedirect("likes/" )
         elif "home" in request.POST:
-            return HttpResponseRedirect("/socialcircle/dash/%s" %scuser_id ) #FIXME come recuperare id dell'utente loggato?
+            return HttpResponseRedirect("/socialcircle/dash/%s" %request.user.id )
         elif "logout" in request.POST:
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
@@ -108,19 +124,19 @@ def profile(request,scuser_id):
             #sel_post = user.post_set.get(pk=request.POST['like_post'])
             #new_like = Like(like_post=sel_post, like_user=user)
             #new_like.save()
-            return render(request,'socialcircle/profile.html',{'scuser':user, 'post': post_orderd,'post_liked' : post_liked} ) #FIXME non me gusta molto che ricarica tutta la pag
+            return render(request,'socialcircle/profile.html',data)
         elif "unlike_post" in request.POST:
             #sel_like = user.like_set.get(like_post=request.POST['unlike_post'])
             #sel_like.delete()
             #sel_like.save()
-            return render(request,'socialcircle/profile.html',{'scuser':user, 'post': post_orderd, 'post_liked' : post_liked} ) #FIXME non me gusta molto che ricarica tutta la pag
+            return render(request,'socialcircle/profile.html',data)
         elif "delete_post" in request.POST:
             sel_post = user.post_set.get(pk=request.POST['delete_post'])
             sel_post.delete()
             sel_post.save()
-            return render(request,'socialcircle/profile.html',{'scuser':user, 'post': post_orderd, 'post_liked' : post_liked} ) #FIXME non me gusta molto che ricarica tutta la pag
+            return render(request,'socialcircle/profile.html',data)
     elif request.method == 'GET':
-        return render(request,'socialcircle/profile.html',{'scuser':user, 'post': post_orderd, 'post_liked' : post_liked} )
+        return render(request,'socialcircle/profile.html',data )
 
 def settings(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
