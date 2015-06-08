@@ -13,7 +13,9 @@ def addLike(request):
     new_like = Like.objects.create(like_post=sel_post, like_user=request.user)
     new_like.save()
 def deleteLike(request):
-    sel_post = Post.objects.get(pk=request.POST['unlike_post'])
+   # sel_post = Post.objects.get(pk=request.POST['unlike_post'])
+    print "inside delete: ",request.POST['unlike_post']
+    sel_post = get_object_or_404(Post,pk=request.POST['unlike_post'])
     sel_like = Like.objects.filter(like_post=sel_post,like_user=request.user)
     sel_like.delete()
 
@@ -83,8 +85,7 @@ def dash(request,scuser_id):
 
     post_liked = []
     for i in xrange(len(request.user.like_set.values())):
-        post_liked.append( request.user.like_set.values()[i].values()[3])
-
+        post_liked.append(request.user.like_set.values()[i].values()[3])
 
     #print post
     if request.method == 'POST':
@@ -125,9 +126,8 @@ def profile(request,scuser_id):
         friend_list.append(i.pk)
 
     post_liked = []
-    for i in xrange(len(user.like_set.values())):
-        post_liked.append( user.like_set.values()[i].values()[3])
-
+    for i in xrange(len(request.user.like_set.values())):
+        post_liked.append( request.user.like_set.values()[i].values()[3])
 
     post_orderd = user.post_set.order_by('-post_date')[:]
 
@@ -212,10 +212,11 @@ def videos(request,scuser_id):
 
 def likes(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
-    post_liked = request.user.like_set.order_by('-like_date')[:]
+    post_liked = request.user.like_set.order_by('-like_date')
     if "back" in request.POST:
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
-    elif "unlike_post" in request.POST: #FIXME non funziona l'unlike
+    elif "unlike_post" in request.POST:
         deleteLike(request)
         return HttpResponseRedirect('')
+
     return render(request,'socialcircle/likes.html', {'scuser':user, 'post_liked':post_liked})
