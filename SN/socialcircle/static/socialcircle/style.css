@@ -68,6 +68,10 @@
 	float: left;
 	padding: 5px 15px;
 }
+#right {
+	width: 16%;
+	float: right;
+}
 #center {
 	width: 32%;
 	float: left;
