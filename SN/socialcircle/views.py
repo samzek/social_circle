@@ -161,6 +161,14 @@ def profile(request,scuser_id):
         elif "share" in request.POST:
             sharePost(request)
             return HttpResponseRedirect('')
+        elif "add_friend" in request.POST:
+            friend = SCUser.objects.get(pk = request.POST['add_friend'])
+            request.user.user.add(friend)
+            return HttpResponseRedirect('')
+        elif "del_friend" in request.POST:
+            friend = SCUser.objects.get(pk = request.POST['del_friend'])
+            request.user.user.remove(friend)
+            return HttpResponseRedirect('')
     elif request.method == 'GET':
         return render(request,'socialcircle/profile.html',data )
 
