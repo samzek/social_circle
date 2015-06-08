@@ -1,9 +1,30 @@
-<h1>Modify your personal information</h1>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
 
-<form method="POST">
-    {% csrf_token %}
 
-    {{ form.as_p }}
+<body>
 
-    <input type="submit" value="Save" />
-</form>
+    <div class="sidebar">
+        <div class="dash-home">
+        </div>
+        <div class="header">
+            <h1>Modify your personal information</h1>
+        </div>
+    </div>
+    <div class="content">
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <input type="submit" value="Save" />
+        </form>
+    </div>
+
+</body>
+
+
+
+
+

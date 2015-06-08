@@ -1,8 +1,19 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
 
+<body>
 
 <div class="sidebar pure-u-1 pure-u-md-1-4">
+    <div class="dash-home">
+        <form  method="POST">
+            {% csrf_token %}
+            <input type="image" src="/static/socialcircle/images/home.png" name="home" value="Home" style="width: 48px;height: 48px;">
+            <input type="image" src="/static/socialcircle/images/logout.png" name="logout" value="Logout" style="width: 48px;height: 48px;">
+        </form>
+    </div>
+
+
     <div class="header">
         <h1>THIS IS A TEST</h1>
 
@@ -37,12 +48,39 @@
     </div>
 
 
-    {% for i in scuser.post_set.all %}
-        <p> {{ i }} | category : {{ i.post_cat }} </p>
+    <div id="posts" style="margin-top: 50%">
 
-    {% endfor %}
+            {% for p in post %}
+                <div class="post">
+			        <div class="entry" >
+				        <div style="margin-bottom: -3px;">
+					        <div class="quote">
+                                {{ p }}
+					        </div>
+				        </div>
+                        <div class="options">
+                        <form  method="POST">
+                            {% csrf_token %}
+                            {% if p.id in post_liked %}
+                                <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% else %}
+                                <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                            {% endif %}
+                            <input type="image" src="/static/socialcircle/images/delete.png" name="delete_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                        </form>
+                        </div>
+			        </div>
+                    <div class="stats">
+                        Posted on {{ p.post_date }}
+                    </div>
+		        </div>
+
+            {% endfor %}
+
+    </div>
 
 
 
 </div>
 
+</body>

@@ -1,0 +1,159 @@
+/* POSTS */
+#postwrap {
+background-color: #ffffff;
+width: 430px;
+
+height: 100%;
+position: fixed;
+left: 450px;
+opacity: .3;
+z-index: 777;
+}
+
+#posts {
+    top: 10px;
+    position: absolute;
+    margin-left: 20%;
+}
+
+.post {
+width: 535px;
+
+}
+
+.entry {
+background-color: #f0ebea;
+width: 400px;
+
+border: 5px solid #f0ebea;
+overflow: hidden;
+position: relative;
+margin-bottom: 15px;
+z-index: 999;
+font-family: verdana, sans-serif;
+font-size: 9px;
+color: #948f8d;
+letter-spacing: 1px;
+text-align: justify;
+float: left;
+}
+
+.entry b, strong {
+color: #a48388;
+}
+
+.entry i, em {
+color: #ae7564;
+}
+
+.entry a {
+color: #8a888e;
+text-decoration: none;
+}
+
+.entry h1 {
+font-family: 'Raleway', sans-serif;
+font-size: 16px;
+color: #a48388;
+font-weight: normal;
+text-transform: uppercase;
+letter-spacing: 1px;
+text-align: justify;
+margin: 0;
+border-left: 10px solid #a48388;
+margin-left: 10px;
+padding-left: 5px;
+}
+
+.entry h1 a {
+color: #a48388;
+}
+
+.entry blockquote {
+border-left: 2px solid #ae7564;
+padding-left: 5px;
+margin-left: 5px;
+}
+
+/* PHOTO POSTS */
+.entry img {
+max-width: 400px;
+opacity: .8;
+-webkit-transition: all 0.5s ease-in-out;
+-moz-transition: all 0.5s ease-in-out;
+-o-transition: all 0.5s ease-in-out;
+-ms-transition: all 0.5s ease-in-out;
+transition: all 0.5s ease-in-out;
+}
+
+.entry img:hover {
+opacity: 1;
+}
+
+.photo {
+opacity: .8;
+-webkit-transition: all 0.5s ease-in-out;
+-moz-transition: all 0.5s ease-in-out;
+-o-transition: all 0.5s ease-in-out;
+-ms-transition: all 0.5s ease-in-out;
+transition: all 0.5s ease-in-out;
+}
+
+.photo:hover {
+opacity: 1;
+}
+
+
+/* QUOTE POSTS */
+.entry h2 {
+font-family: 'Raleway', sans-serif;
+font-size: 14px;
+color: #a48388;
+font-weight: normal;
+letter-spacing: 1px;
+text-align: left;
+margin-top: 7px;
+}
+
+.quote {
+font-family: georgia;
+font-size: 24px;
+color: #a48388;
+float: left;
+}
+
+/* STATISTICS */
+.stats {
+font-family: consolas;
+font-size: 9px;
+color: #908b94;
+text-transform: uppercase;
+line-height: 10px;
+width: 100px;
+float: right;
+margin-top: 10px;
+opacity: 0;
+filter: alpha(opacity=0);
+-moz-opacity: 0;
+-khtml-opacity: 0;
+-webkit-transition: all 1s ease;
+-moz-transition: all 1s ease;
+-o-transition: all 1s ease;
+border-left: 5px solid #a48388;
+padding-left: 5px;
+}
+
+.stats a {
+color: #908b94;
+text-decoration: none;
+}
+
+.post:hover .stats {
+opacity: 1;
+-moz-opacity: 1;
+-khtml-opacity: 1;
+}
+
+.options{
+    float: right;
+}

@@ -1,6 +1,30 @@
-{% if fl_p  %}
-    <h1>Galleria Foto</h1>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
 
-{% else %}
-    <h1>Galleria Video</h1>
-{% endif %}
+
+
+<body>
+
+    <div class="sidebar">
+        <div class="dash-home">
+            <form method="POST">
+                {% csrf_token %}
+                    <input type="image" src="/static/socialcircle/images/back.png" name="back" value="Back" style="width: 48px;height: 48px;">
+            </form>
+        </div>
+        <div class="header">
+            {% if fl_p  %}
+                <h1>Photo Gallery</h1>
+            {% else %}
+                <h1>Video Gallery</h1>
+            {% endif %}
+        </div>
+    </div>
+    <div class="content">
+
+    </div>
+
+
+
+</body>
