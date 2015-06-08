@@ -15,27 +15,26 @@
 </div>
 
 <div class="content">
-    <div id="posts" style="margin-top: 5%">
-        {% for i in post_liked %}
-            <div class="post">
-                <div class="entry">
-                    <div style="margin-bottom: -3px;">
-                        <div class="quote">
-                            {{ i.like_post }}
+    <form  method="POST">
+    {% csrf_token %}
+        <div id="posts" style="margin-top: 5%">
+            {% for i in post_liked %}
+                <div class="post">
+                    <div class="entry">
+                        <div style="margin-bottom: -3px;">
+                            <div class="quote">
+                                {{ i.like_post }}
+                            </div>
+                        </div>
+                        <div class="options">
+                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ i.id }}" style="width: 15px;height: 15px;">
                         </div>
                     </div>
-                    <div class="options">
-                        <form  method="POST">
-                            {% csrf_token %}
-                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike" value="Unlike" style="width: 15px;height: 15px;">
-                        </form>
-
+                    <div class="stats">
+                        Liked on {{ i.like_date }}
                     </div>
                 </div>
-                <div class="stats">
-                    Liked on {{ i.like_date }}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+    </form>
 </div>

@@ -12,8 +12,9 @@
 
 #posts {
     top: 10px;
-    position: relative;
+    position: absolute;
     margin-left: 20%;
+    z-index: 0;
 }
 
 .post {

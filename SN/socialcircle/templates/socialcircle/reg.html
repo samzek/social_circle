@@ -1,70 +1,79 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
 
-<style>
-    body {
-        background-image: url(https://putyourheartonpaper.files.wordpress.com/2015/01/circle-of-life.jpg);
-}
-    h1 {
-        color: greenyellow;
-        font-family: "Great Vibes", cursive;
-        font-size: 50px;
-        font-weight: normal;
-        margin-bottom: 0px;
-        margin-top:40px;
-        text-align: right;
-        text-shadow:0 1px 1px #fff;
-}
-</style>
 
-<h1>Sign in</h1>
+<html>
+	<head>
+		<script type="text/javascript">
+			var totalCount = 7;
+			function ChangeIt()
+			{
+                var num = Math.ceil( Math.random() * totalCount );
+                document.body.background = '/static/socialcircle/images/bg_images/'+ num+'.jpg';
+                document.body.style.backgroundSize = "cover";// Background repeat
 
-<form method="POST">
-    {% csrf_token %}
+			}
+		</script>
+	</head>
+<body>
 
-    <section id="left">
-    <div class="circular_small">
-        <br>
-        {{ form.first_name.errors }}
-        <label for="{{ form.first_name.id_for_label }}">First name</label>
-        {{ form.first_name }}<br>
-        {{ form.last_name.errors }}
-        <label for="{{ form.last_name.id_for_label }}">Last name</label>
-        {{ form.last_name }}<br>
-    </div>
-    <div class="circular_small">
-        <br>
-        {{ form.username.errors }}
-        <label for="{{ form.username.id_for_label }}">Username</label>
-        {{ form.username }}<br>
-        {{ form.password.errors }}
-        <label for="{{ form.passwod.id_for_label }}">Password</label>
-        {{ form.password }}<br>
-    </div>
-    </section>
-    <section id="center">
-        <input class="menu" type="submit" value="Save" style="margin-right: auto;margin-left: auto;width: 150px;
-        height: 150px;"/>
-    </section>
+    <h1>Sign in</h1>
 
-    <section id="right">
-    <div class="circular_small">
-        <br><br>
-        {{ form.email.errors }}
-        <label for="{{ form.email.id_for_label }}">Email</label>
-        {{ form.email }}
-    </div>
+    <form method="POST">
+        {% csrf_token %}
 
-    <div class="circular_small" style="line-height: 35px">
-        {{ form.birth_date.errors }}
-        <label for="{{ form.birth_date.id_for_label }}">Birth_date</label>
-        {{ form.birth_date }}
-        {{ form.address.errors }}
-        <label for="{{ form.address.id_for_label }}">Address</label>
-        {{ form.address }}<br>
-        {{ form.user_bio.errors }}
-        <label for="{{ form.user_bio.id_for_label }}">Bio</label><br>
-        {{ form.user_bio }}
-    </div>
-    </section>
-</form>
+        <section id="left">
+        <div class="circular_small">
+            <br>
+            {{ form.first_name.errors }}
+            <label for="{{ form.first_name.id_for_label }}">First name</label>
+            {{ form.first_name }}<br>
+            {{ form.last_name.errors }}
+            <label for="{{ form.last_name.id_for_label }}">Last name</label>
+            {{ form.last_name }}<br>
+        </div>
+        <div class="circular_small">
+            <br>
+            {{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}">Username</label>
+            {{ form.username }}<br>
+            {{ form.password.errors }}
+            <label for="{{ form.passwod.id_for_label }}">Password</label><br>
+            {{ form.password }}<br>
+        </div>
+        </section>
+        <section id="center">
+            <br><br><br><br>
+            <input class="menu" type="submit" value="Save" style="margin-right: auto;margin-left: auto;width: 150px;
+            height: 150px;"/>
+        </section>
+
+        <section id="right">
+        <div class="circular_small">
+            <br>
+            {{ form.email.errors }}
+            <label for="{{ form.email.id_for_label }}">Email</label><br>
+            {{ form.email }}
+            {{ form.birth_date.errors }}
+            <label for="{{ form.birth_date.id_for_label }}">Birth_date</label>
+            {{ form.birth_date }}
+        </div>
+
+        <div class="circular_small" style="line-height: 35px">
+            <br>
+            {{ form.address.errors }}
+            <label for="{{ form.address.id_for_label }}">Address</label><br>
+            {{ form.address }}<br>
+            {{ form.user_bio.errors }}
+            <label for="{{ form.user_bio.id_for_label }}">Bio</label><br>
+            {{ form.user_bio }}
+        </div>
+        </section>
+    </form>
+
+</body>
+	<script type="text/javascript">
+		ChangeIt();
+	</script>
+</html>
+
