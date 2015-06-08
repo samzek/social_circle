@@ -1,5 +1,6 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/popup.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/CircularNavigation/css/component1.css' %}"/>
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/CircularNavigation/css/demo.css' %}"/>
@@ -12,20 +13,22 @@
         <div class="sidebar pure-u-1 pure-u-md-1-4" >
 
             <div class="dash-home">
+
                 <form  method="POST">
                     {% csrf_token %}
-                    <input type="image" src="/static/socialcircle/images/profile.png" name="profile" value="Profile" style="width: 48px;height: 48px;">
+                    <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
+                        <img src="/static/socialcircle/images/profile.png" style="width: 48px;height: 48px;">
+                    </a>
                     <input type="image" src="/static/socialcircle/images/logout.png" name="logout" value="Logout" style="width: 48px;height: 48px;">
                 </form>
+
             </div>
 
             <center>
-                <form method="POST">
-                    {% csrf_token %}
-                    <input type="image" src="/static/socialcircle/images/unknow_user_small.jpg"
-                                   name="profile_ref" value="Profile"
-                                   class="circular" style="width: 220px;height: 220px;cursor: hand">
-                </form>
+                    <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
+                        <img src="/static/socialcircle/images/unknow_user_small.jpg" class="circular"
+                             style="width: 220px;height: 220px;cursor: hand">
+                    </a>
                 <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
 
                 <label class="name_style" style="font-size: 10px">Insert possible friends here</label>
@@ -35,12 +38,14 @@
     </section>
     <div class="content">
         <div id="posts">
-            {% for p in post %}
+            {% for p,u in post %}
                 <div class="post">
 			        <div class="entry">
 				        <div style="margin-bottom: -3px;">
 					        <div class="quote">
-						        {{ p }}
+                                <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}">{{ u.username }}</a><br><br>
+						        {{ p.content }}<br>
+                                <br>
 					        </div>
 				        </div>
                         <div class="options">
@@ -63,7 +68,7 @@
             {% endfor %}
         </div>
     </div>
-         <div class="component">
+    <div class="component">
             <!-- Start Nav Structure -->
             <button class="cn-button" id="cn-button">+</button>
                 <div class="cn-wrapper" id="cn-wrapper">
@@ -72,7 +77,7 @@
                     <ul>
                         <li><a><span><img src="/static/socialcircle/images/chat_small.png"></span></a></li>
                         <li><a><span><img src="/static/socialcircle/images/video_small.png"></span></a></li>
-                        <li><a><span><img src="/static/socialcircle/images/text_small.png"></span></a></li>
+                        <li><a href="#loginScreen"><span><img src="/static/socialcircle/images/text_small.png" ></span></a></li>
                         <li><a><span><img src="/static/socialcircle/images/camera_small.png"></span></a></li>
                         <li><a><span><input type="image" src="/static/socialcircle/images/logout_small.png"
                             name="logout_menu" value="logout_menu"></span></a></li>
@@ -81,9 +86,30 @@
                 </div>
             <div id="cn-overlay" class="cn-overlay"></div>
                         <!-- End Nav Structure -->
-        </div>
+    </div>
+
+    <div id="loginScreen">
+	<center>
+	<p><label class="name_style"> Insert a post :D</label></p>
+        <br><br><br><br>
+
+        <form method="POST">
+                {% csrf_token %}
+            <p><input type = "text" name="text_post" value=""></p>
+            <p>
+                <input type = "submit" name="submit_text" value = "Submit" >
+
+                <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
+            </p>
+        </form>
+	</center>
+
+    </div>
+    <div id="cover" >
     </div>
 </div>
+
     <script src="/static/socialcircle/CircularNavigation/js/polyfills.js"></script>
     <script src="/static/socialcircle/CircularNavigation/js/demo1.js"></script>
+
 </body>

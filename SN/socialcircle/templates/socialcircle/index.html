@@ -1,39 +1,45 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
 
-<style>
-    body {
-        background-image: url(https://putyourheartonpaper.files.wordpress.com/2015/01/circle-of-life.jpg);
-}
-    h1 {
 
-        font-family: "Helvetica", cursive;
-        font-size: 50px;
-        font-weight: normal;
-        margin-bottom: 0px;
-        margin-top:40px;
-        text-align: right;
-        text-shadow:0 1px 1px #fff;
-}
-</style>
+<html>
+	<head>
+		<script type="text/javascript">
+			var totalCount = 7;
+			function ChangeIt()
+			{
+			var num = Math.ceil( Math.random() * totalCount );
+			document.body.background = '/static/socialcircle/images/bg_images/'+ num+'.jpg';
+			document.body.style.backgroundSize = "cover";// Background repeat
 
-<h1 class="h1">Social circle</h1>
-<form  method="POST">
-    {% csrf_token %}
-    <div class="circular_small">
-        <p>
-        <br><label>Username:</label>
-        <input type="text" name="username">
-        <label>Password:</label>
-        <input type="password" name="password"><br><br>
-        <input type="submit" name="log_in" value="Log in">
-        </p>
+			}
+		</script>
+	</head>
+<body>
 
-    </div>
-</form>
-<form method="POST">
-    {% csrf_token %}
-        <br><br><br>
-        <input class="menu" type="submit" name="sign" value="Sign in"/>
-</form>
+    <h1 class="h1">Social circle</h1>
+    <form  method="POST">
+        {% csrf_token %}
+        <div class="circular_small">
+            <p>
+            <br><label>Username:</label>
+            <input type="text" name="username">
+            <label>Password:</label>
+            <input type="password" name="password"><br><br>
+            <input type="submit" name="log_in" value="Log in">
+            </p>
+
+        </div>
+    </form>
+    <form method="POST">
+        {% csrf_token %}
+            <br><br><br>
+            <input class="menu" type="submit" name="sign" value="Sign in"/>
+    </form>
+
+</body>
+	<script type="text/javascript">
+		ChangeIt();
+	</script>
+</html>
 
