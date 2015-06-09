@@ -31,7 +31,6 @@ def sharePost(request):
     new_post.post_user.add(u)
     new_post.save()
 
-
 def index(request):
     if request.method == 'POST':
         if "log_in" in request.POST:
@@ -68,11 +67,12 @@ def reg(request):
 
 
 
-
+unknow_user_list = []
 @decorators.login_required(login_url='/socialcircle/')
 def dash(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
     post = []
+    global unknow_user_list
     for i in SCUser.objects.filter(user=scuser_id)[:]:
         for k in Post.objects.filter(post_user=i.pk)[:].order_by('-post_date')[:5]:
             tupla = (k,i)
@@ -90,6 +90,7 @@ def dash(request,scuser_id):
     #print post
     if request.method == 'POST':
         if "logout" in request.POST or "logout_menu" in request.POST:
+            unknow_user_list = []
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
         elif "profile" in request.POST:
@@ -110,15 +111,23 @@ def dash(request,scuser_id):
             new_post.post_user.add(u)
             new_post.save()
             return HttpResponseRedirect('')
+        elif "res_user" in request.POST:
+            unknow_user_list = []
+            user_name = request.POST['res_user']
+            first = user_name.split(' ')[0]
+            second = user_name.split(' ')[1]
+            for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
+                unknow_user_list.append(i)
+            return HttpResponseRedirect('')
 
-
-    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked})
+    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list})
 
 
 
 
 
 def profile(request,scuser_id):
+    global unknow_user_list
     user = get_object_or_404(SCUser,pk=scuser_id)
 
     friend_list = []
@@ -145,6 +154,7 @@ def profile(request,scuser_id):
         elif "home" in request.POST:
             return HttpResponseRedirect("/socialcircle/dash/%s" %request.user.id )
         elif "logout" in request.POST:
+            unknow_user_list = []
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
         elif "like_post" in request.POST:

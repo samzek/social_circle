@@ -68,6 +68,17 @@
             {% endfor %}
         </div>
     </div>
+    <section id="right" style="width: 30%">
+        <form method="POST">
+            {% csrf_token %}
+            <div style="margin-left: 35px;">
+                <input type = "text" name="res_user" value="insert name here" style="width: 200px;height: 30px;" class="icon">
+                {% for u in unknow %}
+                    <p><a href="{% url 'socialcircle:profile' scuser_id=u.pk %}">{{ u.username }}</a></p>
+                {% endfor %}
+            </div>
+        </form>
+    </section>
     <div class="component">
             <!-- Start Nav Structure -->
             <button class="cn-button" id="cn-button">+</button>
@@ -77,7 +88,7 @@
                     <ul>
                         <li><a><span><img src="/static/socialcircle/images/chat_small.png"></span></a></li>
                         <li><a><span><img src="/static/socialcircle/images/video_small.png"></span></a></li>
-                        <li><a href="#loginScreen"><span><img src="/static/socialcircle/images/text_small.png" ></span></a></li>
+                        <li><a href="#postScreen"><span><img src="/static/socialcircle/images/text_small.png" ></span></a></li>
                         <li><a><span><img src="/static/socialcircle/images/camera_small.png"></span></a></li>
                         <li><a><span><input type="image" src="/static/socialcircle/images/logout_small.png"
                             name="logout_menu" value="logout_menu"></span></a></li>
@@ -87,8 +98,7 @@
             <div id="cn-overlay" class="cn-overlay"></div>
                         <!-- End Nav Structure -->
     </div>
-
-    <div id="loginScreen" >
+    <div id="postScreen" >
 	<center>
 	<p><label class="name_style"> Insert a post :D</label></p>
         <br><br><br><br>
@@ -97,13 +107,11 @@
             {% csrf_token %}
             <p><input type = "text" name="text_post" value=""></p>
             <p>
-                <input type = "submit" name="submit_text" value = "Submit" >
-
+                <input type = "submit" name="submit_text" value = "Submit">
                 <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
             </p>
         </form>
 	</center>
-
     </div>
     <div id="cover" >
     </div>
