@@ -26,8 +26,9 @@
 
             <center>
                     <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
-                        <img src="/static/socialcircle/images/unknow_user_small.jpg" class="circular"
+                        <img src=" /static/{{ scuser.profile_image.url }}" class="circular"
                              style="width: 220px;height: 220px;cursor: hand">
+
                     </a>
                 <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
 

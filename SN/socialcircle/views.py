@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,render_to_response,RequestContext
 from django.http import HttpRequest,HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate,login,hashers,decorators,logout
-from .models import SCUser,Post,Like,Cat
+from .models import SCUser,Post,Like
 
 from django.core.urlresolvers import reverse
 from forms import modifyUser
@@ -21,13 +21,11 @@ def deleteLike(request):
 
 def sharePost(request):
     sel_post = Post.objects.get(pk=request.POST['share'])
-    is_p = sel_post.is_photo
-    is_v = sel_post.is_video
-    is_t = sel_post.is_text
+    p_t = sel_post.post_type
     cont = sel_post.content
-    cat = Cat.objects.get(pk=1)
+
     u = SCUser.objects.get(pk=request.user.id)
-    new_post = Post.objects.create(content=cont,is_photo=is_p,is_video=is_v, is_text=is_t,post_cat=cat)
+    new_post = Post.objects.create(content=cont, post_type=p_t)
     new_post.post_user.add(u)
     new_post.save()
 
@@ -105,9 +103,9 @@ def dash(request,scuser_id):
             sharePost(request)
             return HttpResponseRedirect('')
         elif "submit_text" in request.POST:
-            cat = Cat.objects.get(pk=1)
+
             u = SCUser.objects.get(pk=request.user.id)
-            new_post = Post.objects.create(content=request.POST['text_post'],is_photo=False,is_video=False, is_text=True,post_cat=cat)
+            new_post = Post.objects.create(content=request.POST['text_post'],post_type='is_text')
             new_post.post_user.add(u)
             new_post.save()
             return HttpResponseRedirect('')

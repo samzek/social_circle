@@ -13,7 +13,7 @@ class SCUser(AbstractBaseUser,PermissionsMixin):
     is_admin    = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False,null=False)
 
-    #profile_image = models.ImageField(upload_to="images",blank=False,null=False,default="images/unknow_user.jpg")
+    profile_image = models.ImageField(upload_to="media/avatar/",blank=False,null=False,default="media/avatar/unknow_user.jpg")
     user_bio = models.CharField(max_length=600,blank=True)
     address = models.CharField(max_length=30,null=True,blank=True)
     birth_date = models.DateField(null=False)
@@ -53,34 +53,27 @@ class SCUser(AbstractBaseUser,PermissionsMixin):
     def set_username (self,username):
         self.username = username
 
-class Cat (models.Model):
-    type = models.CharField(max_length=50,null=True,blank=True)
-    def __unicode__(self):
-        return self.type
-
 class Post (models.Model):
     post_date = models.DateTimeField(auto_now_add=True)
-    content = models.CharField(max_length=600,null=True)
-    is_photo = models.BooleanField(default=False,null=False)
-    is_video = models.BooleanField(default=False,null=False)
-    is_text = models.BooleanField(default=False,null=False)
+
+    TEXT= 'is_text'
+    VIDEO = 'is_video'
+    PHOTO = 'is_photo'
+
+    POST_CHOICES = (
+        (TEXT, 'Text'),
+        (VIDEO, 'Video'),
+        (PHOTO, 'Photo'),
+    )
+    post_type = models.CharField(max_length=20, choices=POST_CHOICES,default=TEXT)
+
+    content = models.CharField(max_length=600,null=True,blank=True,default="")
+    file = models.FileField(upload_to='media/%Y/%m/%d', blank=True)
 
     post_user = models.ManyToManyField(SCUser)
-    #post_like = models.ManyToManyField(SCUser, through="Like")
-    post_cat = models.ForeignKey(Cat)
 
     def __unicode__(self):
-        return self.content
-
-
-#class Pubblication (models.Model):
- #   pubb_user = models.ForeignKey(SCUser)
-  #  pubb_post = models.ForeignKey(Post)
-   # pubb_date = models.DateTimeField(auto_now_add=True)
-
-   # def __unicode__(self):
-    #    return self.pubb_date
-
+        return 'Post ID: '+ str(self.id)
 
 
 class Like (models.Model):
@@ -90,3 +83,4 @@ class Like (models.Model):
     like_post = models.ForeignKey(Post)
     def __unicode__(self):
         return unicode(self.like_date) + " | "+ self.like_user.username
+

@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True)),
                 ('is_admin', models.BooleanField(default=False)),
                 ('is_staff', models.BooleanField(default=False)),
+                ('profile_image', models.ImageField(default=b'images/unknow_user.jpg', upload_to=b'media/avatar/')),
                 ('user_bio', models.CharField(max_length=600, blank=True)),
                 ('address', models.CharField(max_length=30, null=True, blank=True)),
                 ('birth_date', models.DateField()),
@@ -43,13 +44,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Cat',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('type', models.CharField(max_length=50, null=True, blank=True)),
-            ],
-        ),
-        migrations.CreateModel(
             name='Like',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -61,11 +55,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('post_date', models.DateTimeField(auto_now_add=True)),
-                ('content', models.CharField(max_length=600, null=True)),
-                ('is_photo', models.BooleanField(default=False)),
-                ('is_video', models.BooleanField(default=False)),
-                ('is_text', models.BooleanField(default=False)),
-                ('post_cat', models.ForeignKey(to='socialcircle.Cat')),
+                ('post_type', models.CharField(default=b'is_text', max_length=20, choices=[(b'is_text', b'Text'), (b'is_video', b'Video'), (b'is_photo', b'Photo')])),
+                ('content', models.CharField(default=b'', max_length=600, null=True, blank=True)),
+                ('file', models.FileField(upload_to=b'media/%Y/%m/%d', blank=True)),
                 ('post_user', models.ManyToManyField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
