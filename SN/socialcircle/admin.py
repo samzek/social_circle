@@ -4,6 +4,4 @@ from django.contrib import admin
 from models import *
 admin.site.register(SCUser)
 admin.site.register(Post)
-#admin.site.register(Pubblication)
 admin.site.register(Like)
-admin.site.register(Cat)

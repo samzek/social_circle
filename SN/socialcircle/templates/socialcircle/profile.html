@@ -31,7 +31,8 @@
         <center>
 
         <h1>{{scuser.first_name }} {{scuser.last_name }}</h1>
-        <img class="circular" src="/static/socialcircle/images/unknow_user.jpg">
+        <img class="circular" src="media/{{ scuser.profile_image.url }}">
+
 
         <p>{{ scuser.birth_date }} | {{ scuser.address }}</p>
 

@@ -98,6 +98,8 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'socialcircle.SCUser'
 
+MEDIA_ROOT = os.path.join(BASE_DIR,'socialcircle/static/')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
