@@ -8,7 +8,7 @@
     height:100%;
     display:none;
 }
-#loginScreen
+#postScreen
 {
     height:380px;
     width:340px;
@@ -20,7 +20,7 @@
 	border:5px solid #cccccc;
 	border-radius:10px;
 }
-#loginScreen:target, #loginScreen:target + #cover{
+#postScreen:target, #postScreen:target + #cover{
     display:block;
     opacity:2;
 }

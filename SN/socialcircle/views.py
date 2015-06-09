@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,render_to_response,RequestContext
 from django.http import HttpRequest,HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate,login,hashers,decorators,logout
-from .models import SCUser,Post,Like,Cat
+from .models import SCUser,Post,Like
 
 from django.core.urlresolvers import reverse
 from forms import modifyUser
@@ -13,22 +13,21 @@ def addLike(request):
     new_like = Like.objects.create(like_post=sel_post, like_user=request.user)
     new_like.save()
 def deleteLike(request):
-    sel_post = Post.objects.get(pk=request.POST['unlike_post'])
+   # sel_post = Post.objects.get(pk=request.POST['unlike_post'])
+    print "inside delete: ",request.POST['unlike_post']
+    sel_post = get_object_or_404(Post,pk=request.POST['unlike_post'])
     sel_like = Like.objects.filter(like_post=sel_post,like_user=request.user)
     sel_like.delete()
 
 def sharePost(request):
     sel_post = Post.objects.get(pk=request.POST['share'])
-    is_p = sel_post.is_photo
-    is_v = sel_post.is_video
-    is_t = sel_post.is_text
+    p_t = sel_post.post_type
     cont = sel_post.content
-    cat = Cat.objects.get(pk=1)
+
     u = SCUser.objects.get(pk=request.user.id)
-    new_post = Post.objects.create(content=cont,is_photo=is_p,is_video=is_v, is_text=is_t,post_cat=cat)
+    new_post = Post.objects.create(content=cont, post_type=p_t)
     new_post.post_user.add(u)
     new_post.save()
-
 
 def index(request):
     if request.method == 'POST':
@@ -66,11 +65,12 @@ def reg(request):
 
 
 
-
+unknow_user_list = []
 @decorators.login_required(login_url='/socialcircle/')
 def dash(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
     post = []
+    global unknow_user_list
     for i in SCUser.objects.filter(user=scuser_id)[:]:
         for k in Post.objects.filter(post_user=i.pk)[:].order_by('-post_date')[:5]:
             tupla = (k,i)
@@ -83,12 +83,12 @@ def dash(request,scuser_id):
 
     post_liked = []
     for i in xrange(len(request.user.like_set.values())):
-        post_liked.append( request.user.like_set.values()[i].values()[3])
-
+        post_liked.append(request.user.like_set.values()[i].values()[3])
 
     #print post
     if request.method == 'POST':
         if "logout" in request.POST or "logout_menu" in request.POST:
+            unknow_user_list = []
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
         elif "profile" in request.POST:
@@ -103,21 +103,29 @@ def dash(request,scuser_id):
             sharePost(request)
             return HttpResponseRedirect('')
         elif "submit_text" in request.POST:
-            cat = Cat.objects.get(pk=1)
+
             u = SCUser.objects.get(pk=request.user.id)
-            new_post = Post.objects.create(content=request.POST['text_post'],is_photo=False,is_video=False, is_text=True,post_cat=cat)
+            new_post = Post.objects.create(content=request.POST['text_post'],post_type='is_text')
             new_post.post_user.add(u)
             new_post.save()
             return HttpResponseRedirect('')
+        elif "res_user" in request.POST:
+            unknow_user_list = []
+            user_name = request.POST['res_user']
+            first = user_name.split(' ')[0]
+            second = user_name.split(' ')[1]
+            for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
+                unknow_user_list.append(i)
+            return HttpResponseRedirect('')
 
-
-    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked})
+    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list})
 
 
 
 
 
 def profile(request,scuser_id):
+    global unknow_user_list
     user = get_object_or_404(SCUser,pk=scuser_id)
 
     friend_list = []
@@ -125,9 +133,8 @@ def profile(request,scuser_id):
         friend_list.append(i.pk)
 
     post_liked = []
-    for i in xrange(len(user.like_set.values())):
-        post_liked.append( user.like_set.values()[i].values()[3])
-
+    for i in xrange(len(request.user.like_set.values())):
+        post_liked.append( request.user.like_set.values()[i].values()[3])
 
     post_orderd = user.post_set.order_by('-post_date')[:]
 
@@ -145,6 +152,7 @@ def profile(request,scuser_id):
         elif "home" in request.POST:
             return HttpResponseRedirect("/socialcircle/dash/%s" %request.user.id )
         elif "logout" in request.POST:
+            unknow_user_list = []
             logout(request)
             return HttpResponseRedirect('/socialcircle/')
         elif "like_post" in request.POST:
@@ -212,10 +220,11 @@ def videos(request,scuser_id):
 
 def likes(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
-    post_liked = request.user.like_set.order_by('-like_date')[:]
+    post_liked = request.user.like_set.order_by('-like_date')
     if "back" in request.POST:
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
-    elif "unlike_post" in request.POST: #FIXME non funziona l'unlike
+    elif "unlike_post" in request.POST:
         deleteLike(request)
         return HttpResponseRedirect('')
+
     return render(request,'socialcircle/likes.html', {'scuser':user, 'post_liked':post_liked})

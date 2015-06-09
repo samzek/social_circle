@@ -31,7 +31,7 @@
         <center>
 
         <h1>{{scuser.first_name }} {{scuser.last_name }}</h1>
-        <img class="circular" src="media/{{ scuser.profile_image.url }}">
+        <img class="circular" src=" /static/{{ scuser.profile_image.url }}" >
 
 
         <p>{{ scuser.birth_date }} | {{ scuser.address }}</p>
@@ -69,7 +69,7 @@
 			        <div class="entry" >
 				        <div style="margin-bottom: -3px;">
 					        <div class="quote">
-                                {{ p }}
+                                {{ p.content }}
 					        </div>
 				        </div>
                         <div class="options">

@@ -23,11 +23,11 @@
                     <div class="entry">
                         <div style="margin-bottom: -3px;">
                             <div class="quote">
-                                {{ i.like_post }}
+                                {{ i.like_post.content }}
                             </div>
                         </div>
                         <div class="options">
-                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ i.id }}" style="width: 15px;height: 15px;">
+                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ i.like_post.id }}" style="width: 15px;height: 15px;">
                         </div>
                     </div>
                     <div class="stats">
