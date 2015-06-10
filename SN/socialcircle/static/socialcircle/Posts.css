@@ -22,10 +22,12 @@
 }
 
 .entry {
-    background-color: #f0ebea;
-    width: 400px;
+    background-color: antiquewhite;
 
-    border: 5px solid #f0ebea;
+    width: 400px;
+    box-shadow: 6px 6px #a48388;
+
+    border: 5px solid antiquewhite;
     overflow: hidden;
     position: relative;
     margin-bottom: 15px;
