@@ -101,14 +101,17 @@
     </div>
     <div id="postScreen" >
 	<center>
-	<p><label class="name_style"> Insert a post :D</label></p>
+        <br><br>
+	<p><label class="name_style"> Insert a post </label></p>
         <br><br><br><br>
 
         <form method="POST">
             {% csrf_token %}
-            <p><input type = "text" name="text_post" value=""></p>
+            <textarea name="text_post" value="" style="width: 80%;height: 100px"></textarea>
+
             <p>
-                <input type = "submit" name="submit_text" value = "Submit">
+                <br><br>
+                <input type = "submit" name="submit_text" value = "Submit" >
                 <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
             </p>
         </form>
