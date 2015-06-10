@@ -69,6 +69,8 @@ unknow_user_list = []
 @decorators.login_required(login_url='/socialcircle/')
 def dash(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
+    if user.pk != request.user.id:
+        return HttpResponseRedirect('/socialcircle/dash/%s/' %request.user.id)
     post = []
     global unknow_user_list
     for i in SCUser.objects.filter(user=scuser_id)[:]:
@@ -103,7 +105,6 @@ def dash(request,scuser_id):
             sharePost(request)
             return HttpResponseRedirect('')
         elif "submit_text" in request.POST:
-
             u = SCUser.objects.get(pk=request.user.id)
             new_post = Post.objects.create(content=request.POST['text_post'],post_type='is_text')
             new_post.post_user.add(u)
