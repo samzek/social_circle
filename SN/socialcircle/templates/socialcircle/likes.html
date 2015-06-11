@@ -19,21 +19,70 @@
     {% csrf_token %}
         <div id="posts" style="margin-top: 5%">
             {% for i in post_liked %}
-                <div class="post">
-                    <div class="entry">
-                        <div style="margin-bottom: -3px;">
-                            <div class="quote">
-                                {{ i.like_post.content }}
+                {% if i.like_post.post_type == 'is_text' %}
+                    <div class="post">
+                        <div class="entry">
+                            <div style="margin-bottom: -3px;">
+                                <div class="quote">
+                                    {{ i.like_post.content }}
+                                </div>
+                            </div>
+                            <div class="options">
+                                <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ i.like_post.id }}" style="width: 15px;height: 15px;">
                             </div>
                         </div>
-                        <div class="options">
-                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ i.like_post.id }}" style="width: 15px;height: 15px;">
+                        <div class="stats">
+                            Liked on {{ i.like_date }}
                         </div>
                     </div>
-                    <div class="stats">
-                        Liked on {{ i.like_date }}
+                {% elif i.like_post.post_type == 'is_photo' %}
+                    <div class="post">
+                        <div class="entry">
+                            <div style="margin-bottom: -3px;">
+                                <div class="photo">
+                                    <img src="/static/{{ i.like_post.file }}">
+                                    <p style="font-size: 15">{{ i.like_post.content }}</p>
+
+                                    <br><br>
+                                </div>
+                            </div>
+                            <div class="options">
+                                <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ i.like_post.id }}" style="width: 15px;height: 15px;">
+                            </div>
+                        </div>
+                        <div class="stats">
+                            Liked on {{ i.like_date }}
+                        </div>
                     </div>
-                </div>
+                {% elif i.like_post.post_type == 'is_video' %}
+                    <div class="post">
+                        <div class="entry">
+                            <div style="margin-bottom: -3px;">
+                                <div class="photo">
+
+                                    <center>
+                                        <video width="350" controls>
+                                          <source src="/static/{{ i.like_post.file }}" type="video/mp4">
+                                          Your browser does not support HTML5 video.
+                                        </video>
+                                    </center>
+
+                                    <p style="font-size: 15">{{ i.like_post.content }}</p>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="options">
+                                <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ i.like_post.id }}" style="width: 15px;height: 15px;">
+                            </div>
+                        </div>
+                        <div class="stats">
+                            Liked on {{ i.like_date }}
+                        </div>
+                    </div>
+                {% else %}
+
+                {% endif %}
+
             {% endfor %}
         </div>
     </form>

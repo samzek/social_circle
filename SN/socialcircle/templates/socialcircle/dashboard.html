@@ -40,32 +40,101 @@
     <div class="content">
         <div id="posts" style="z-index: 0;">
             {% for p,u in post %}
-                <div class="post">
-			        <div class="entry" >
-				        <div style="margin-bottom: -3px;">
-					        <div class="quote">
-                                <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}">{{ u.username }}</a><br><br>
-						        {{ p.content }}<br>
-                                <br>
-					        </div>
-				        </div>
-                        <div class="options">
-                            <form  method="POST">
-                                {% csrf_token %}
-                                    {% if p.id in post_liked %}
-                                        <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
-                                    {% else %}
-                                        <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
-                                    {% endif %}
-                                    <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
-                            </form>
+                {% if p.post_type == 'is_text' %}
+                    <div class="post">
+                        <div class="entry" >
+                            <div style="margin-bottom: -3px;">
+                                <div class="quote">
+                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30">{{ u.username }}</p></a><br><br>
+                                    {{ p.content }}<br>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="options">
+                                <form  method="POST">
+                                    {% csrf_token %}
+                                        {% if p.id in post_liked %}
+                                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                        {% else %}
+                                            <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                        {% endif %}
+                                        <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                </form>
 
+                            </div>
                         </div>
-			        </div>
-                    <div class="stats">
-                        {{ p.post_date }}
+                        <div class="stats">
+                            {{ p.post_date }}
+                        </div>
                     </div>
-		        </div>
+                {% elif p.post_type == 'is_photo' %}
+                    <div class="post">
+                        <div class="entry" >
+                            <div style="margin-bottom: -3px;">
+                                <div class="photo">
+                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30;">{{ u.username }}</p></a><br><br>
+                                    <img src="/static/{{ p.file }}">
+                                    <p style="font-size: 15">{{ p.content }}</p>
+
+                                    <br><br>
+                                </div>
+                            </div>
+                            <div class="options">
+                                <form  method="POST">
+                                    {% csrf_token %}
+                                        {% if p.id in post_liked %}
+                                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                        {% else %}
+                                            <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                        {% endif %}
+                                        <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                </form>
+
+                            </div>
+                        </div>
+                        <div class="stats">
+                            {{ p.post_date }}
+                        </div>
+                    </div>
+                {% elif p.post_type == 'is_video' %}
+                    <div class="post">
+                        <div class="entry" >
+                            <div style="margin-bottom: -3px;">
+                                <div class="photo">
+                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30;">{{ u.username }}</p></a><br><br>
+
+
+                                    <center>
+                                        <video width="350" controls>
+                                          <source src="/static/{{ p.file }}" type="video/mp4">
+                                          Your browser does not support HTML5 video.
+                                        </video>
+                                    </center>
+
+                                    <p style="font-size: 15">{{ p.content }}</p>
+
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="options">
+                                <form  method="POST">
+                                    {% csrf_token %}
+                                        {% if p.id in post_liked %}
+                                            <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                        {% else %}
+                                            <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                        {% endif %}
+                                        <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                </form>
+
+                            </div>
+                        </div>
+                        <div class="stats">
+                            {{ p.post_date }}
+                        </div>
+                    </div>
+                {% endif %}
+
             {% endfor %}
         </div>
     </div>
@@ -88,9 +157,9 @@
                      {% csrf_token %}
                     <ul>
                         <li><a><span><img src="/static/socialcircle/images/chat_small.png"></span></a></li>
-                        <li><a><span><img src="/static/socialcircle/images/video_small.png"></span></a></li>
-                        <li><a href="#postScreen"><span><img src="/static/socialcircle/images/text_small.png" ></span></a></li>
-                        <li><a><span><img src="/static/socialcircle/images/camera_small.png"></span></a></li>
+                        <li><a href="#videoPost"><span><img src="/static/socialcircle/images/video_small.png"></span></a></li>
+                        <li><a href="#textPost"><span><img src="/static/socialcircle/images/text_small.png" ></span></a></li>
+                        <li><a href="#photoPost"><span><img src="/static/socialcircle/images/camera_small.png"></span></a></li>
                         <li><a><span><input type="image" src="/static/socialcircle/images/logout_small.png"
                             name="logout_menu" value="logout_menu"></span></a></li>
                     </ul>
@@ -99,23 +168,67 @@
             <div id="cn-overlay" class="cn-overlay"></div>
                         <!-- End Nav Structure -->
     </div>
-    <div id="postScreen" >
-	<center>
-        <br><br>
-	<p><label class="name_style"> Insert a post </label></p>
-        <br><br><br><br>
+    <div id="textPost" >
+        <center>
+            <br><br>
+            <p><label class="name_style"> Insert a post </label></p>
+            <br><br><br><br>
 
-        <form method="POST">
-            {% csrf_token %}
-            <textarea name="text_post" value="" style="width: 80%;height: 100px"></textarea>
+            <form method="POST">
+                {% csrf_token %}
+                <textarea name="text_post" value="" style="width: 80%;height: 100px"></textarea>
 
-            <p>
-                <br><br>
-                <input type = "submit" name="submit_text" value = "Submit" >
-                <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
-            </p>
-        </form>
-	</center>
+                <p>
+                    <br><br>
+                    <input type = "submit" name="submit_text" value = "Submit" >
+                    <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
+                </p>
+            </form>
+        </center>
+    </div>
+    <div id="cover" >
+    </div>
+    <div id="photoPost" >
+        <center>
+            <br><br>
+            <p><label class="name_style"> Insert a post </label></p>
+            <br><br><br><br>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.file.errors }}
+                    {{ form.file }}
+                {{ form.file.errors }}
+                    {{ form.content }}
+                    <br><br>
+                    <input type = "submit" name="submit_photo" value = "Submit" >
+                    <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
+                </p>
+            </form>
+        </center>
+    </div>
+    <div id="cover" >
+    </div>
+    <div id="videoPost" >
+        <center>
+            <br><br>
+            <p><label class="name_style"> Insert a post </label></p>
+            <br><br><br><br>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.file.errors }}
+                    {{ form.file }}
+                {{ form.file.errors }}
+                    {{ form.content }}
+
+                <p>
+                    <br><br>
+                    <input type = "submit" name="submit_video" value = "Submit" >
+                    <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
+                </p>
+            </form>
+        </center>
     </div>
     <div id="cover" >
     </div>

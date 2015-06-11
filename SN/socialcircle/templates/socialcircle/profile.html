@@ -65,35 +65,115 @@
     <div id="posts" style="margin-top: 50%">
 
             {% for p in post %}
-                <div class="post">
-			        <div class="entry" >
-				        <div style="margin-bottom: -3px;">
-					        <div class="quote">
-                                {{ p.content }}
-					        </div>
-				        </div>
-                        <div class="options">
-                        <form  method="POST">
-                            {% csrf_token %}
-                            {% if p.id in post_liked %}
-                                <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                {% if p.post_type == 'is_text' %}
+                    <div class="post">
+                        <div class="entry" >
+                            <div style="margin-bottom: -3px;">
+                                <div class="quote">
+                                    {{ p.content }}
+                                </div>
+                            </div>
+                            <div class="options">
+                            <form  method="POST">
+                                {% csrf_token %}
+                                {% if p.id in post_liked %}
+                                    <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                    {% else %}
+                                    <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% endif %}
+                                {% if scuser.id == curr_user.id %}
+                                    <input type="image" src="/static/socialcircle/images/delete.png" name="delete_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
                                 {% else %}
-                                <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
-                            {% endif %}
-                            {% if scuser.id == curr_user.id %}
-                                <input type="image" src="/static/socialcircle/images/delete.png" name="delete_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
-                            {% else %}
-                                <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
-                            {% endif %}
+                                    <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% endif %}
 
-
-                        </form>
+                            </form>
+                            </div>
                         </div>
-			        </div>
-                    <div class="stats">
-                        Posted on {{ p.post_date }}
+                        <div class="stats">
+                            Posted on {{ p.post_date }}
+                        </div>
                     </div>
-		        </div>
+
+                {% elif p.post_type == 'is_photo' %}
+                    <div class="post">
+                        <div class="entry" >
+                            <div style="margin-bottom: -3px;">
+                                <div class="photo">
+
+                                    <img src="/static/{{ p.file }}">
+                                    <p style="font-size: 15">{{ p.content }}</p>
+                                    <br><br>
+
+                                </div>
+                            </div>
+                            <div class="options">
+                            <form  method="POST">
+                                {% csrf_token %}
+                                {% if p.id in post_liked %}
+                                    <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                    {% else %}
+                                    <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% endif %}
+                                {% if scuser.id == curr_user.id %}
+                                    <input type="image" src="/static/socialcircle/images/delete.png" name="delete_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% else %}
+                                    <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% endif %}
+
+
+                            </form>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            Posted on {{ p.post_date }}
+                        </div>
+                    </div>
+
+                {% elif p.post_type == 'is_video' %}
+                    <div class="post">
+                        <div class="entry" >
+                            <div style="margin-bottom: -3px;">
+                                <div class="photo">
+
+                                    <br>
+                                    <center>
+                                        <video width="350" controls>
+                                          <source src="/static/{{ p.file }}" type="video/mp4">
+                                          Your browser does not support HTML5 video.
+                                        </video>
+                                    </center>
+                                    <p style="font-size: 15">{{ p.content }}</p>
+
+                                    <br>
+
+                                </div>
+                            </div>
+                            <div class="options">
+                            <form  method="POST">
+                                {% csrf_token %}
+                                {% if p.id in post_liked %}
+                                    <input type="image" src="/static/socialcircle/images/unlike.png" name="unlike_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                    {% else %}
+                                    <input type="image" src="/static/socialcircle/images/like.png" name="like_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% endif %}
+                                {% if scuser.id == curr_user.id %}
+                                    <input type="image" src="/static/socialcircle/images/delete.png" name="delete_post" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% else %}
+                                    <input type="image" src="/static/socialcircle/images/sh.png" name="share" value="{{ p.id }}" style="width: 15px;height: 15px;">
+                                {% endif %}
+
+
+                            </form>
+                            </div>
+                        </div>
+                        <div class="stats">
+                            Posted on {{ p.post_date }}
+                        </div>
+                    </div>
+                {% endif %}
+
+
 
             {% endfor %}
 

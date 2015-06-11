@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate,login,hashers,decorators,logout
 from .models import SCUser,Post,Like
 
 from django.core.urlresolvers import reverse
-from forms import modifyUser
+from forms import modifyUser, insertFile
 
 # Create your views here.
 
@@ -23,9 +23,10 @@ def sharePost(request):
     sel_post = Post.objects.get(pk=request.POST['share'])
     p_t = sel_post.post_type
     cont = sel_post.content
+    f = sel_post.file
 
     u = SCUser.objects.get(pk=request.user.id)
-    new_post = Post.objects.create(content=cont, post_type=p_t)
+    new_post = Post.objects.create(content=cont, post_type=p_t,file=f)
     new_post.post_user.add(u)
     new_post.save()
 
@@ -118,8 +119,29 @@ def dash(request,scuser_id):
             for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
                 unknow_user_list.append(i)
             return HttpResponseRedirect('')
+        elif "submit_photo" in request.POST:
+            u = SCUser.objects.get(pk=request.user.id)
+            form = insertFile(request.POST, request.FILES)
+            if form.is_valid():
+                new_post= form.save(commit=False)
+                new_post.post_type='is_photo'
+                new_post.save()
+                new_post.post_user.add(u)
+                new_post.save()
+                return HttpResponseRedirect('')
+        elif "submit_video" in request.POST:
+            u = SCUser.objects.get(pk=request.user.id)
+            form = insertFile(request.POST, request.FILES)
+            if form.is_valid():
+                new_post= form.save(commit=False)
+                new_post.post_type='is_video'
+                new_post.save()
+                new_post.post_user.add(u)
+                new_post.save()
+                return HttpResponseRedirect('')
 
-    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list})
+    form = insertFile()
+    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list, 'form':form})
 
 
 

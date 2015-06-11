@@ -8,7 +8,7 @@
     height:100%;
     display:none;
 }
-#postScreen
+#textPost
 {
     height:380px;
     width:340px;
@@ -20,7 +20,41 @@
 	border:5px solid #cccccc;
 	border-radius:10px;
 }
-#postScreen:target, #postScreen:target + #cover{
+#textPost:target, #textPost:target + #cover{
+    display:block;
+    opacity:2;
+}
+
+#photoPost
+{
+    height:380px;
+    width:340px;
+    margin:0 auto;
+    position:relative;
+    z-index:10;
+    display:none;
+	background-color: white;
+	border:5px solid #cccccc;
+	border-radius:10px;
+}
+#photoPost:target, #photoPost:target + #cover{
+    display:block;
+    opacity:2;
+}
+
+#videoPost
+{
+    height:380px;
+    width:340px;
+    margin:0 auto;
+    position:relative;
+    z-index:10;
+    display:none;
+	background-color: white;
+	border:5px solid #cccccc;
+	border-radius:10px;
+}
+#videoPost:target, #videoPost:target + #cover{
     display:block;
     opacity:2;
 }
