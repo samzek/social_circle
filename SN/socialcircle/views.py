@@ -5,6 +5,7 @@ from .models import SCUser,Post,Like
 
 from django.core.urlresolvers import reverse
 from forms import modifyUser, insertFile
+from random import randint
 
 # Create your views here.
 
@@ -29,6 +30,29 @@ def sharePost(request):
     new_post = Post.objects.create(content=cont, post_type=p_t,file=f)
     new_post.post_user.add(u)
     new_post.save()
+
+def get_three_friends(request,scuser_id):
+
+    fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
+
+    three_friends = []
+    if len(fr) < 4:
+        for i in xrange(len(fr)):
+                three_friends.append(fr[i])
+    else:
+        s = set()
+        while len(s) < 3:
+            s.add(randint(0,len(fr)-1))
+        three_friends.append(fr[s.pop()])
+        three_friends.append(fr[s.pop()])
+        three_friends.append(fr[s.pop()])
+
+        print three_friends
+
+    return three_friends
+
+
+
 
 def index(request):
     if request.method == 'POST':
@@ -155,6 +179,8 @@ def profile(request,scuser_id):
     for i in SCUser.objects.filter(user=request.user.id)[:]:
         friend_list.append(i.pk)
 
+
+    three_friends= get_three_friends(request,scuser_id)
     #TODO creare una lista con i tre amici da visualizzare nella pagina del profilo
 
     post_liked = []
@@ -163,7 +189,7 @@ def profile(request,scuser_id):
 
     post_orderd = user.post_set.order_by('-post_date')[:]
 
-    data = {'scuser':user, 'post': post_orderd, 'post_liked' : post_liked, 'curr_user':request.user, 'friends':friend_list}
+    data = {'scuser':user, 'post': post_orderd, 'post_liked' : post_liked, 'curr_user':request.user, 'friends':friend_list,'three':three_friends}
 
     if request.method == 'POST':
         if "photos" in request.POST:

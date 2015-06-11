@@ -21,7 +21,7 @@
         <h3>Friends</h3>
         <form  method="POST">
         {% csrf_token %}
-            {% for i in scuser.user.all %}
+            {% for i in three %}
                 <a href="/socialcircle/profile/{{ i.id }}/"  > <img src="/static/{{ i.profile_image.url }}"  style="width: 48px;height: 48px;border-radius: 50%;"></a>
             {% endfor %}
             <input type="image" src="/static/socialcircle/images/friends.png" name="all_friends" value="All_friends" style="width: 48px;height: 48px;">
