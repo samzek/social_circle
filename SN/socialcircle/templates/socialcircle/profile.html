@@ -14,12 +14,20 @@
     </div>
 
 
-    <div class="header">
-        <h1>THIS IS A TEST</h1>
+    <div style="text-align:right;margin-right:5%;margin-top: 40%" >
+        <h2>Biography</h2>
+        <p>{{ scuser.user_bio }}</p>
 
-        {% for i in scuser.user.all %}
-            <a href="/socialcircle/profile/{{ i.id }}/"  >{{ i }}</a>
-        {% endfor %}
+        <h3>Friends</h3>
+        <form  method="POST">
+        {% csrf_token %}
+            {% for i in scuser.user.all %}
+                <a href="/socialcircle/profile/{{ i.id }}/"  > <img src="/static/{{ i.profile_image.url }}"  style="width: 48px;height: 48px;border-radius: 50%;"></a>
+            {% endfor %}
+            <input type="image" src="/static/socialcircle/images/friends.png" name="all_friends" value="All_friends" style="width: 48px;height: 48px;">
+        </form>
+
+        <h3>Wanna add new friends?</h3>
 
         <p>Insert possible friends here</p>
 
@@ -102,7 +110,7 @@
                                 <div class="photo">
 
                                     <img src="/static/{{ p.file }}">
-                                    <p style="font-size: 15">{{ p.content }}</p>
+                                    <p style="font-size: 15px">{{ p.content }}</p>
                                     <br><br>
 
                                 </div>
@@ -143,7 +151,7 @@
                                           Your browser does not support HTML5 video.
                                         </video>
                                     </center>
-                                    <p style="font-size: 15">{{ p.content }}</p>
+                                    <p style="font-size: 15px">{{ p.content }}</p>
 
                                     <br>
 

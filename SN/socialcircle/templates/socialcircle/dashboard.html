@@ -45,7 +45,7 @@
                         <div class="entry" >
                             <div style="margin-bottom: -3px;">
                                 <div class="quote">
-                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30">{{ u.username }}</p></a><br><br>
+                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30px;font-family:georgia;">{{ u.username }}</p></a><br><br>
                                     {{ p.content }}<br>
                                     <br>
                                 </div>
@@ -72,9 +72,9 @@
                         <div class="entry" >
                             <div style="margin-bottom: -3px;">
                                 <div class="photo">
-                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30;">{{ u.username }}</p></a><br><br>
+                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30px;font-family:georgia;">{{ u.username }}</p></a><br><br>
                                     <img src="/static/{{ p.file }}">
-                                    <p style="font-size: 15">{{ p.content }}</p>
+                                    <p style="font-size: 15px">{{ p.content }}</p>
 
                                     <br><br>
                                 </div>
@@ -101,7 +101,7 @@
                         <div class="entry" >
                             <div style="margin-bottom: -3px;">
                                 <div class="photo">
-                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30;">{{ u.username }}</p></a><br><br>
+                                    <a href="{% url 'socialcircle:profile' scuser_id=u.pk %}"><p style="font-size:30px;font-family:georgia;">{{ u.username }}</p></a><br><br>
 
 
                                     <center>
@@ -111,7 +111,7 @@
                                         </video>
                                     </center>
 
-                                    <p style="font-size: 15">{{ p.content }}</p>
+                                    <p style="font-size: 15px">{{ p.content }}</p>
 
                                     <br>
                                 </div>

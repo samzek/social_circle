@@ -1,6 +1,7 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/gallery.css' %}" />
 
 
 
@@ -21,7 +22,46 @@
             {% endif %}
         </div>
     </div>
+
     <div class="content">
+
+        {% if fl_p  %}
+
+
+            <div class="container" id="container">
+                <div class="gallery">
+
+                    {% for p in post %}
+
+                        {% if p.post_type == 'is_photo' %}
+                            <a tabindex="1"><img src="/static/{{ p.file }}"></a>
+                        {% endif %}
+                    {% endfor %}
+
+                    <span class="close"></span>
+                </div>
+            </div>
+
+            {% else %}
+                <div class="container" id="container" style="width: 800px;">
+
+                        {% for p in post %}
+                            {% if p.post_type == 'is_video' %}
+                                    <video width="250px" height="150px" controls>
+                                        <source src="/static/{{ p.file }}" type="video/mp4">
+                                        Your browser does not support HTML5 video.
+                                    </video>
+                            {% endif %}
+                        {% endfor %}
+
+                        <span class="close"></span>
+
+                </div>
+
+
+            {% endif %}
+
+
 
     </div>
 
