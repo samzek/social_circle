@@ -1,0 +1,54 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
+
+
+<body>
+
+    <div class="sidebar">
+        <div class="dash-home">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="image" src="/static/socialcircle/images/back.png" name="back" value="Back" style="width: 48px;height: 48px;">
+            </form>
+        </div>
+        <div class="header">
+            <h1>{{ scuser.username }}'s friends</h1>
+        </div>
+    </div>
+    <div class="content" style="margin-top: 5%">
+
+        {% for friend in scuser.user.all %}
+            {% if scuser != curr_user %}
+                {%if friend != scuser%}
+                    <p style="text-align: center; font-family: georgia;font-size: 30px">
+                        <a href="/socialcircle/profile/{{ friend.id }}/"  >
+                            <img src="/static/{{ friend.profile_image.url }}" style="width: 80px;height: 80px;border-radius: 50%;">
+                            {{ friend }}
+                        </a>
+                    
+                    </p>
+                {% endif %}
+            {% elif scuser == curr_user %}
+
+                {% if friend != curr_user %}
+                        <p style="text-align: center; font-family: georgia;font-size: 30px">
+                            <a href="/socialcircle/profile/{{ friend.id }}/"  >
+                                <img src="/static/{{ friend.profile_image.url }}" style="width: 80px;height: 80px;border-radius: 50%;">
+                                {{ friend }}
+                            </a>
+
+                        </p>
+
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+</body>
+
+
+
+
+

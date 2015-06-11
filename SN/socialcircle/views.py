@@ -4,7 +4,8 @@ from django.contrib.auth import authenticate,login,hashers,decorators,logout
 from .models import SCUser,Post,Like
 
 from django.core.urlresolvers import reverse
-from forms import modifyUser
+from forms import modifyUser, insertFile
+from random import randint
 
 # Create your views here.
 
@@ -23,11 +24,35 @@ def sharePost(request):
     sel_post = Post.objects.get(pk=request.POST['share'])
     p_t = sel_post.post_type
     cont = sel_post.content
+    f = sel_post.file
 
     u = SCUser.objects.get(pk=request.user.id)
-    new_post = Post.objects.create(content=cont, post_type=p_t)
+    new_post = Post.objects.create(content=cont, post_type=p_t,file=f)
     new_post.post_user.add(u)
     new_post.save()
+
+def get_three_friends(request,scuser_id):
+
+    fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
+
+    three_friends = []
+    if len(fr) < 4:
+        for i in xrange(len(fr)):
+                three_friends.append(fr[i])
+    else:
+        s = set()
+        while len(s) < 3:
+            s.add(randint(0,len(fr)-1))
+        three_friends.append(fr[s.pop()])
+        three_friends.append(fr[s.pop()])
+        three_friends.append(fr[s.pop()])
+
+        print three_friends
+
+    return three_friends
+
+
+
 
 def index(request):
     if request.method == 'POST':
@@ -118,8 +143,29 @@ def dash(request,scuser_id):
             for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
                 unknow_user_list.append(i)
             return HttpResponseRedirect('')
+        elif "submit_photo" in request.POST:
+            u = SCUser.objects.get(pk=request.user.id)
+            form = insertFile(request.POST, request.FILES)
+            if form.is_valid():
+                new_post= form.save(commit=False)
+                new_post.post_type='is_photo'
+                new_post.save()
+                new_post.post_user.add(u)
+                new_post.save()
+                return HttpResponseRedirect('')
+        elif "submit_video" in request.POST:
+            u = SCUser.objects.get(pk=request.user.id)
+            form = insertFile(request.POST, request.FILES)
+            if form.is_valid():
+                new_post= form.save(commit=False)
+                new_post.post_type='is_video'
+                new_post.save()
+                new_post.post_user.add(u)
+                new_post.save()
+                return HttpResponseRedirect('')
 
-    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list})
+    form = insertFile()
+    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list, 'form':form})
 
 
 
@@ -133,13 +179,17 @@ def profile(request,scuser_id):
     for i in SCUser.objects.filter(user=request.user.id)[:]:
         friend_list.append(i.pk)
 
+
+    three_friends= get_three_friends(request,scuser_id)
+    #TODO creare una lista con i tre amici da visualizzare nella pagina del profilo
+
     post_liked = []
     for i in xrange(len(request.user.like_set.values())):
         post_liked.append( request.user.like_set.values()[i].values()[3])
 
     post_orderd = user.post_set.order_by('-post_date')[:]
 
-    data = {'scuser':user, 'post': post_orderd, 'post_liked' : post_liked, 'curr_user':request.user, 'friends':friend_list}
+    data = {'scuser':user, 'post': post_orderd, 'post_liked' : post_liked, 'curr_user':request.user, 'friends':friend_list,'three':three_friends}
 
     if request.method == 'POST':
         if "photos" in request.POST:
@@ -178,6 +228,9 @@ def profile(request,scuser_id):
             friend = SCUser.objects.get(pk = request.POST['del_friend'])
             request.user.user.remove(friend)
             return HttpResponseRedirect('')
+        elif "all_friends" in request.POST:
+            return HttpResponseRedirect("/socialcircle/profile/%s/friends" %scuser_id )
+
     elif request.method == 'GET':
         return render(request,'socialcircle/profile.html',data )
 
@@ -189,7 +242,7 @@ def settings(request,scuser_id):
         return HttpResponseRedirect('/socialcircle/profile/%s/settings' %request.user.id)
 
     if request.method == 'POST':
-        form = modifyUser(request.POST,instance=user)
+        form = modifyUser(request.POST,request.FILES,instance=user)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
@@ -204,10 +257,12 @@ def photos(request,scuser_id):
     p = True
     user = get_object_or_404(SCUser,pk=scuser_id)
 
+    post_orderd = user.post_set.order_by('-post_date')[:]
+
     if "back" in request.POST:
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
 
-    return render(request,'socialcircle/gallery.html', {'fl_p':p,'scuser':user})
+    return render(request,'socialcircle/gallery.html', {'fl_p':p,'scuser':user,'post':post_orderd})
 
 
 
@@ -216,10 +271,12 @@ def videos(request,scuser_id):
     p = False
     user = get_object_or_404(SCUser,pk=scuser_id)
 
+    post_orderd = user.post_set.order_by('-post_date')[:]
+
     if "back" in request.POST:
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
 
-    return render(request,'socialcircle/gallery.html', {'fl_p':p,'scuser':user})
+    return render(request,'socialcircle/gallery.html', {'fl_p':p,'scuser':user,'post':post_orderd})
 
 
 def likes(request,scuser_id):
@@ -235,3 +292,10 @@ def likes(request,scuser_id):
         return HttpResponseRedirect('')
 
     return render(request,'socialcircle/likes.html', {'scuser':user, 'post_liked':post_liked})
+
+def friends(request,scuser_id):
+    user = get_object_or_404(SCUser,pk=scuser_id)
+    curr_user = request.user
+    if "back" in request.POST:
+        return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
+    return render(request,'socialcircle/friends.html', {'scuser':user, 'curr_user':curr_user})

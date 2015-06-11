@@ -1,0 +1,155 @@
+/* page layout */
+*{
+    margin:0;
+    padding:0;
+}
+footer {
+    background-color:#212121;
+    bottom:0;
+    box-shadow: 0 -1px 2px #111111;
+    -moz-box-shadow: 0 -1px 2px #111111;
+    -webkit-box-shadow: 0 -1px 2px #111111;
+    display:block;
+    height:70px;
+    left:0;
+    position:fixed;
+    width:100%;
+    z-index:100;
+}
+footer h2{
+    font-size:22px;
+    font-weight:normal;
+    left:50%;
+    margin-left:-400px;
+    padding:22px 0;
+    position:absolute;
+    width:540px;
+}
+footer a.stuts,a.stuts:visited{
+    border:none;
+    text-decoration:none;
+    color:#fcfcfc;
+    font-size:14px;
+    left:50%;
+    line-height:31px;
+    margin:23px 0 0 110px;
+    position:absolute;
+    top:0;
+}
+footer .stuts span {
+    font-size:22px;
+    font-weight:bold;
+    margin-left:5px;
+}
+.container {
+    background:peachpuff;
+    margin-left:10%;
+	margin-top:5%;
+    padding:20px;
+    position:relative;
+    width:700px;
+
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+
+    box-shadow:1px 1px 5px #111;
+    -moz-box-shadow:1px 1px 5px #111;
+    -webkit-box-shadow:1px 1px 5px #111;
+}
+
+/* css3 photo gallery styles */
+.gallery {
+    width:610px;
+    margin:0 auto;
+}
+.gallery a {
+    display:inline-block;
+    height:150px;
+    position:relative;
+    width:200px;
+}
+.gallery a img {
+    border:5px solid #fff;
+    cursor:pointer;
+    display:block;
+    height:100%;
+    left:0px;
+    position:absolute;
+    top:0px;
+    width:100%;
+    z-index:1;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+
+    -webkit-transition-property:width, height, top, bottom, left, right, z-index, border;
+    -webkit-transition-duration:0.5s;
+    -moz-transition-property:width, height, top, bottom, left, right, z-index, border;
+    -moz-transition-duration:0.5s;
+    -o-transition-property:width, height, top, bottom, left, right, z-index, border;
+    -o-transition-duration:0.5s;
+    transition-property:width, height, top, bottom, left, right, z-index, border;
+    transition-duration:0.5s;
+}
+.gallery a:focus img {
+    border:15px solid #fff;
+    cursor:default;
+    height:250%;
+    position:absolute;
+    width:250%;
+    z-index:25;
+
+    box-shadow:1px 1px 5px #888;
+    -moz-box-shadow:1px 1px 5px #888;
+    -webkit-box-shadow:1px 1px 5px #888;
+    -webkit-transition-property:width, height, top, bottom, left, right, z-index, border;
+    -webkit-transition-duration:0.5s;
+    -moz-transition-property:width, height, top, bottom, left, right, z-index, border;
+    -moz-transition-duration:0.5s;
+    -o-transition-property:width, height, top, bottom, left, right, z-index, border;
+    -o-transition-duration:0.5s;
+    transition-property:width, height, top, bottom, left, right, z-index, border;
+    transition-duration:0.5s;
+}
+
+/* custom focus rules */
+.gallery a:focus:nth-child(3n+1) img {
+left:150px;
+}
+.gallery a:focus:nth-child(3n+2) img {
+    left:-50px;
+}
+.gallery a:focus:nth-child(3n+3) img {
+    left:-250px;
+}
+.gallery a:focus:nth-child(-n+3) img {
+    top:140px;
+}
+.gallery a:focus:nth-child(n+7) img {
+    top:-150px;
+}
+.gallery a:focus:nth-child(n+10) img {
+    top:-295px;
+}
+
+/* extra close layer */
+.gallery .close {
+    background:transparent;
+    cursor:pointer;
+    display:none;
+    height:352px;
+    left:170px;
+    position:absolute;
+    top:160px;
+    width:500px;
+    z-index:30;
+}
+.gallery a:focus ~ .close {
+    display:block;
+}
