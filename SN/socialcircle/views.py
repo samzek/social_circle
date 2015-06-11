@@ -58,6 +58,9 @@ def reg(request):
             new_user = form.save(commit=False)
             new_user.password = hashers.make_password(new_user.password,salt=None,hasher='default')
             new_user.save()
+
+            new_user.user.add(new_user)
+            new_user.save()
             return HttpResponseRedirect('/socialcircle/')
     else:
         form = modifyUser()
@@ -78,9 +81,6 @@ def dash(request,scuser_id):
             tupla = (k,i)
             post.append(tupla)
 
-    for i in user.post_set.order_by('-post_date')[:]:
-        tupla= (i,user)
-        post.append(tupla)
 
 
     post_liked = []
