@@ -185,6 +185,9 @@ def profile(request,scuser_id):
 
 def settings(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
+    if user.pk != request.user.id:
+        return HttpResponseRedirect('/socialcircle/profile/%s/settings' %request.user.id)
+
     if request.method == 'POST':
         form = modifyUser(request.POST,instance=user)
         if form.is_valid():
@@ -221,6 +224,9 @@ def videos(request,scuser_id):
 
 def likes(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
+    if user.pk != request.user.id:
+        return HttpResponseRedirect('/socialcircle/profile/%s/likes' %request.user.id)
+
     post_liked = request.user.like_set.order_by('-like_date')
     if "back" in request.POST:
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
