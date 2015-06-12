@@ -15,8 +15,10 @@
 
 
     <div style="text-align:right;margin-right:5%;margin-top: 40%" >
-        <h2>Biography</h2>
-        <p>{{ scuser.user_bio }}</p>
+        {% if scuser.user_bio != "" %}
+            <h2>Biography</h2>
+            <p>{{ scuser.user_bio }}</p>
+        {% endif %}
 
         <h3>Friends</h3>
         <form  method="POST">
