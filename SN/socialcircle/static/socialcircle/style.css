@@ -100,6 +100,7 @@
 	border-radius: 10px;
 	height: 60px;
 	width: 300px;
+    z-index: 10;
 }
 #footer {
 	background:white;

@@ -19,7 +19,6 @@
       var messageFromServer = event.data;
       var list_element = document.createElement('li');
       list_element.innerHTML = messageFromServer;
-        window.alert(list_element.textContent);
       $("#message_list ul").prepend(list_element);
     };
 
@@ -30,7 +29,11 @@
 
       if (e.keyCode == 13) { 
         e.preventDefault(); // sometimes useful
-        chat.send(inputbox.value);  
+          var user = "{{ user.username }} wrote: <br>";
+          var message = inputBox.value;
+          var final = user.concat(message);
+          final = final.concat("<br><br>");
+        chat.send(final);
         inputbox.value="";
       }
     }, false);
@@ -68,9 +71,13 @@
 </section>
 <section id="center" style="margin-top: 0%">
     <h1> {{ chat.name }} </h1>
-    <div id="message_list">
-      <ul>
-      </ul>
+    <div class="post" style="z-index: -1">
+        <div class="entry" style="z-index: -1">
+            <div id="message_list" class="quote" style="z-index: -1">
+              <ul style="list-style-type: none;">
+              </ul>
+            </div>
+        </div>
     </div>
     <div id="footer">
         <center><textarea  class="txtarea" name="term" id="inputbox" cols="40" rows="4">Insert text here</textarea></center>

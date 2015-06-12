@@ -25,20 +25,34 @@
         <section id="left">
         <div class="circular_small">
             <br>
-            {{ form.first_name.errors }}
-            <label for="{{ form.first_name.id_for_label }}">First name</label>
+            {% if form.first_name.errors %}
+                <label style="color: red">First name missed</label>
+            {% else %}
+                <label> First name</label>
+            {% endif %}
             {{ form.first_name }}<br>
-            {{ form.last_name.errors }}
-            <label for="{{ form.last_name.id_for_label }}">Last name</label>
+
+            {% if form.last_name.errors %}
+                <label style="color: red">Last name missed</label>
+            {% else %}
+                <label> Last name</label>
+            {% endif %}
             {{ form.last_name }}<br>
         </div>
         <div class="circular_small">
             <br>
-            {{ form.username.errors }}
-            <label for="{{ form.username.id_for_label }}">Username</label>
+            {% if form.username.errors %}
+                <label style="color: red">Username missed</label>
+            {% else %}
+                <label>Username</label>
+            {% endif %}
             {{ form.username }}<br>
-            {{ form.password.errors }}
-            <label for="{{ form.passwod.id_for_label }}">Password</label><br>
+
+            {% if form.password.errors %}
+                <label style="color: red">Password missed</label><br>
+            {% else %}
+                <label>Password</label><br>
+            {% endif %}
             {{ form.password }}<br>
         </div>
         </section>
@@ -51,21 +65,31 @@
         <section id="right">
         <div class="circular_small">
             <br>
-            {{ form.email.errors }}
-            <label for="{{ form.email.id_for_label }}">Email</label><br>
+            {% if form.email.errors %}
+                <label style="color: red">Email missed</label><br>
+            {% else %}
+                 <label>Email</label><br>
+            {% endif %}
             {{ form.email }}
-            {{ form.birth_date.errors }}
-            <label for="{{ form.birth_date.id_for_label }}">Birth_date</label>
+
+            {% if form.birth_date.errors %}
+                <label style="color: red;">Birth_date missed</label>
+            {% else %}
+                <label>Birth_date</label>
+            {% endif %}
             {{ form.birth_date }}
         </div>
 
         <div class="circular_small" style="line-height: 35px">
             <br>
-            {{ form.address.errors }}
-            <label for="{{ form.address.id_for_label }}">Address</label><br>
+            {% if form.address.errors %}
+                <label style="color: red">Address missed</label><br>
+            {% else %}
+                <label>Address</label><br>
+            {% endif %}
             {{ form.address }}<br>
             {{ form.user_bio.errors }}
-            <label for="{{ form.user_bio.id_for_label }}">Bio</label><br>
+            <label>Bio</label><br>
             {{ form.user_bio }}
         </div>
         </section>

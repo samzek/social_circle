@@ -108,13 +108,25 @@ def dash(request,scuser_id):
     if user.pk != request.user.id:
         return HttpResponseRedirect('/socialcircle/dash/%s/' %request.user.id)
     post = []
+    friend = []
     global unknow_user_list
+
+    """
     for i in SCUser.objects.filter(user=scuser_id)[:]:
-        for k in Post.objects.filter(post_user=i.pk)[:].order_by('-post_date')[:5]:
+        for k in Post.objects.filter(post_user=i.pk)[:].order_by('-post_date')[:2]:
             tupla = (k,i)
             post.append(tupla)
+    """
+    for i in SCUser.objects.filter(user=scuser_id)[:]:
+        friend.append(i)
 
-
+    #count = 0
+    for k in Post.objects.filter()[:].order_by('-post_date')[:]:
+        for i in k.post_user.all():
+            if i in friend:# and count < 20:
+                tupla = (k,SCUser.objects.get(pk=i.id))
+                post.append(tupla)
+                #count += 1
 
     post_liked = []
     for i in xrange(len(request.user.like_set.values())):
@@ -144,15 +156,6 @@ def dash(request,scuser_id):
             new_post.save()
             return HttpResponseRedirect('')
         elif "res_user" in request.POST:
-            """
-            unknow_user_list = []
-            user_name = request.POST['res_user']
-            first = user_name.split(' ')[0]
-            second = user_name.split(' ')[1]
-            for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
-                unknow_user_list.append(i)
-            return HttpResponseRedirect('/socialcircle/dash/%s/#' %request.user.id)
-            """
             search(request)
             return HttpResponseRedirect('/socialcircle/dash/%s/#' %request.user.id)
 
@@ -185,7 +188,7 @@ def dash(request,scuser_id):
 
 
 
-
+@decorators.login_required(login_url='/socialcircle/')
 def profile(request,scuser_id):
     global unknow_user_list
     user = get_object_or_404(SCUser,pk=scuser_id)
@@ -316,9 +319,12 @@ def friends(request,scuser_id):
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
     return render(request,'socialcircle/friends.html', {'scuser':user, 'friends':fr})
 
+@decorators.login_required(login_url='/socialcircle/')
 def chat_list(request,scuser_id):
     global unknow_user_list
     user = get_object_or_404(SCUser,pk=scuser_id)
+    if user.pk != request.user.id:
+        return HttpResponseRedirect('/socialcircle/dash/%s/' %request.user.id)
     #chat_rooms = ChatRoom.objects.order_by('name')[:5]
     chat_rooms = ChatRoom.objects.filter(user=scuser_id)
     context = {
@@ -348,10 +354,15 @@ def chat_list(request,scuser_id):
 
     return render(request,'socialcircle/chat_list.html', context)
 
+@decorators.login_required(login_url='/socialcircle/')
 def chat_room(request,scuser_id ,chat_room_id):
     global unknow_user_list
     chat = get_object_or_404(ChatRoom, pk=chat_room_id)
     user = get_object_or_404(SCUser,pk=scuser_id)
+
+    if user.id != request.user.id:
+        return HttpResponseRedirect('/socialcircle/dash/%s/' %request.user.id)
+
     if request.method == 'POST':
         if "logout" in request.POST:
                 unknow_user_list = []
