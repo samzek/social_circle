@@ -142,7 +142,7 @@ def dash(request,scuser_id):
             second = user_name.split(' ')[1]
             for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
                 unknow_user_list.append(i)
-            return HttpResponseRedirect('')
+            return HttpResponseRedirect('/socialcircle/dash/%s/#' %request.user.id)
         elif "submit_photo" in request.POST:
             u = SCUser.objects.get(pk=request.user.id)
             form = insertFile(request.POST, request.FILES)
@@ -165,7 +165,8 @@ def dash(request,scuser_id):
                 return HttpResponseRedirect('')
 
     form = insertFile()
-    return render(request,'socialcircle/dashboard.html',{'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list, 'form':form})
+    data = {'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list, 'form':form}
+    return render(request,'socialcircle/dashboard.html', data)
 
 
 
@@ -295,7 +296,8 @@ def likes(request,scuser_id):
 
 def friends(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
+    fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
     curr_user = request.user
     if "back" in request.POST:
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
-    return render(request,'socialcircle/friends.html', {'scuser':user, 'curr_user':curr_user})
+    return render(request,'socialcircle/friends.html', {'scuser':user, 'friends':fr})

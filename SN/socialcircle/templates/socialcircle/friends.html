@@ -1,6 +1,7 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
-<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/table.css' %}" />
+
 
 
 <body>
@@ -18,31 +19,34 @@
     </div>
     <div class="content" style="margin-top: 5%">
 
-        {% for friend in scuser.user.all %}
-            {% if scuser != curr_user %}
-                {%if friend != scuser%}
-                    <p style="text-align: center; font-family: georgia;font-size: 30px">
-                        <a href="/socialcircle/profile/{{ friend.id }}/"  >
-                            <img src="/static/{{ friend.profile_image.url }}" style="width: 80px;height: 80px;border-radius: 50%;">
-                            {{ friend }}
-                        </a>
-                    
-                    </p>
-                {% endif %}
-            {% elif scuser == curr_user %}
+        <table class="rounded" >
+        <tr>
+            <th>Link</th>
+            <th>Username</th>
+            <th>Real Name</th>
+            <th>email</th>
+        </tr>
+        {% for friend in friends %}
+            <tr>
+                <td>
+                    <a href="/socialcircle/profile/{{ friend.id }}/"  >
+                        <img src="/static/{{ friend.profile_image.url }}" style="width: 80px;height: 80px;border-radius: 50%;">
+                    </a>
+                </td>
+                <td>
+                    {{ friend }}
+                </td>
+                <td>
+                    {{ friend.first_name }} {{ friend.last_name }}
+                </td>
+                <td>
+                    {{ friend.email }}
+                </td>
 
-                {% if friend != curr_user %}
-                        <p style="text-align: center; font-family: georgia;font-size: 30px">
-                            <a href="/socialcircle/profile/{{ friend.id }}/"  >
-                                <img src="/static/{{ friend.profile_image.url }}" style="width: 80px;height: 80px;border-radius: 50%;">
-                                {{ friend }}
-                            </a>
+            </tr>
 
-                        </p>
-
-                {% endif %}
-            {% endif %}
         {% endfor %}
+        </table>
 
     </div>
 

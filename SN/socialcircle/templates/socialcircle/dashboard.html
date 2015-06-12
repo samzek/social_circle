@@ -174,7 +174,7 @@
             <p><label class="name_style"> Insert a post </label></p>
             <br><br><br><br>
 
-            <form method="POST">
+            <form  action="{% url 'socialcircle:dash' scuser_id=user.pk %}" method="POST">
                 {% csrf_token %}
                 <textarea name="text_post" value="" style="width: 80%;height: 100px"></textarea>
 
@@ -194,7 +194,7 @@
             <p><label class="name_style"> Insert a post </label></p>
             <br><br><br><br>
 
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'socialcircle:dash' scuser_id=user.pk %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.file.errors }}
                     {{ form.file }}
@@ -215,7 +215,7 @@
             <p><label class="name_style"> Insert a post </label></p>
             <br><br><br><br>
 
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" action="{% url 'socialcircle:dash' scuser_id=user.pk %}"    enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.file.errors }}
                     {{ form.file }}
