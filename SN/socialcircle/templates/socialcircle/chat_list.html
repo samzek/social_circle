@@ -1,0 +1,61 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/popup.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
+<section id="left">
+        <div class="sidebar pure-u-1 pure-u-md-1-4" >
+
+            <div class="dash-home">
+
+                <form  method="POST">
+                    {% csrf_token %}
+                    <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
+                        <img src="/static/socialcircle/images/profile.png" style="width: 48px;height: 48px;">
+                    </a>
+                    <input type="image" src="/static/socialcircle/images/logout.png" name="logout" value="Logout" style="width: 48px;height: 48px;">
+                </form>
+
+            </div>
+
+            <center>
+                    <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
+                        <img src=" /static/{{ scuser.profile_image.url }}" class="circular"
+                             style="width: 220px;height: 220px;cursor: hand">
+
+                    </a>
+                <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
+
+                <label class="name_style" style="font-size: 10px">Insert possible friends here</label>
+            </center>
+
+        </div>
+</section>
+<section id="center" style="margin-top: 0%">
+    <h1>Your chats:</h1>
+    {% if chat_list %}
+        <ul>
+        {% for chat in chat_list %}
+            <li><a href="{% url 'socialcircle:chat_room' scuser_id=scuser.id chat_room_id=chat.id %}">{{ chat.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No chats are available.</p>
+    {% endif %}
+</section>
+<section id="right" style="width: 30%">
+        <h1 style="margin-left: 8%">Create new chat room:</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="margin-left: 35px;">
+                <input type = "text" name="res_user" value="insert name here" style="width: 200px;height: 30px;" class="icon"></div>
+       </form>
+        <form method="POST">
+            {% csrf_token %}
+            <div style="margin-left: 35px">
+                {% for u in unknow %}
+                    <p><input type="image" src="/static/{{ u.profile_image.url }}" name="newchat" value="{{ u }}"
+                            style="width: 48px;height: 48px;border-radius: 50%;"></p>
+                {% endfor %}
+            </div>
+        </form>
+</section>

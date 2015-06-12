@@ -95,3 +95,17 @@
     padding:4px 4px 4px 22px;
     height:18px;
 }
+.txtarea {
+	border: 2px solid #765942;
+	border-radius: 10px;
+	height: 60px;
+	width: 300px;
+}
+#footer {
+	background:white;
+	width:50%;
+	height:80px;
+	position: fixed;
+	bottom:0;
+	left:25%;
+}

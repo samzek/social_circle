@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,render_to_response,RequestContext
 from django.http import HttpRequest,HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate,login,hashers,decorators,logout
-from .models import SCUser,Post,Like
+from .models import SCUser,Post,Like,ChatRoom
 
 from django.core.urlresolvers import reverse
 from forms import modifyUser, insertFile
@@ -51,7 +51,15 @@ def get_three_friends(request,scuser_id):
 
     return three_friends
 
-
+unknow_user_list = []
+def search(request):
+    global unknow_user_list
+    unknow_user_list = []
+    user_name = request.POST['res_user']
+    first = user_name.split(' ')[0]
+    second = user_name.split(' ')[1]
+    for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
+            unknow_user_list.append(i)
 
 
 def index(request):
@@ -93,7 +101,7 @@ def reg(request):
 
 
 
-unknow_user_list = []
+
 @decorators.login_required(login_url='/socialcircle/')
 def dash(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
@@ -136,6 +144,7 @@ def dash(request,scuser_id):
             new_post.save()
             return HttpResponseRedirect('')
         elif "res_user" in request.POST:
+            """
             unknow_user_list = []
             user_name = request.POST['res_user']
             first = user_name.split(' ')[0]
@@ -143,6 +152,10 @@ def dash(request,scuser_id):
             for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
                 unknow_user_list.append(i)
             return HttpResponseRedirect('/socialcircle/dash/%s/#' %request.user.id)
+            """
+            search(request)
+            return HttpResponseRedirect('/socialcircle/dash/%s/#' %request.user.id)
+
         elif "submit_photo" in request.POST:
             u = SCUser.objects.get(pk=request.user.id)
             form = insertFile(request.POST, request.FILES)
@@ -163,7 +176,8 @@ def dash(request,scuser_id):
                 new_post.post_user.add(u)
                 new_post.save()
                 return HttpResponseRedirect('')
-
+        elif "chats" in request.POST:
+            return HttpResponseRedirect('chat_list/')
     form = insertFile()
     data = {'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list, 'form':form}
     return render(request,'socialcircle/dashboard.html', data)
@@ -301,3 +315,51 @@ def friends(request,scuser_id):
     if "back" in request.POST:
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
     return render(request,'socialcircle/friends.html', {'scuser':user, 'friends':fr})
+
+def chat_list(request,scuser_id):
+    global unknow_user_list
+    user = get_object_or_404(SCUser,pk=scuser_id)
+    #chat_rooms = ChatRoom.objects.order_by('name')[:5]
+    chat_rooms = ChatRoom.objects.filter(user=scuser_id)
+    context = {
+        'chat_list': chat_rooms,
+        'scuser':user,
+        'unknow':unknow_user_list,
+    }
+    if request.method == 'POST':
+        print "POST"
+        if "res_user" in request.POST:
+            print "inside res"
+            search(request)
+            return HttpResponseRedirect('/socialcircle/dash/%s/chat_list' %request.user.id)
+        elif "newchat" in request.POST:
+            friend = request.POST['newchat']
+            f = SCUser.objects.get(username=friend)
+            roomName = user.username + "-"+friend
+            print roomName
+            room = ChatRoom.objects.create(name=roomName)
+            room.user.add(user.id)
+            room.user.add(f.id)
+            room.save()
+        elif "logout" in request.POST:
+            unknow_user_list = []
+            logout(request)
+            return HttpResponseRedirect('/socialcircle/')
+
+    return render(request,'socialcircle/chat_list.html', context)
+
+def chat_room(request,scuser_id ,chat_room_id):
+    global unknow_user_list
+    chat = get_object_or_404(ChatRoom, pk=chat_room_id)
+    user = get_object_or_404(SCUser,pk=scuser_id)
+    if request.method == 'POST':
+        if "logout" in request.POST:
+                unknow_user_list = []
+                logout(request)
+                return HttpResponseRedirect('/socialcircle/')
+    #print "obj",chat
+    return render(request, 'socialcircle/chat_room.html', {'chat': chat,'user':user})
+
+def longpoll_chat_room(request, chat_room_id):
+    chat = get_object_or_404(ChatRoom, pk=chat_room_id)
+    return render(request, 'socialcircle/longpoll_chat_room.html', {'chat': chat})
