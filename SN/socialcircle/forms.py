@@ -15,3 +15,4 @@ class insertFile(ModelForm):
     class Meta:
         model = Post
         fields = ['file','content']
+

@@ -17,12 +17,14 @@
 	</head>
 <body>
 
-    <h1>Sign in</h1>
+
 
     <form method="POST">
         {% csrf_token %}
 
         <section id="left">
+        <h1>Sign in</h1>
+        <br><br><br><br><br><br><br><br>
         <div class="circular_small">
             <br>
             {% if form.first_name.errors %}
@@ -56,13 +58,14 @@
             {{ form.password }}<br>
         </div>
         </section>
-        <section id="center">
+        <section id="center" >
             <br><br><br><br>
             <input class="menu" type="submit" value="Save" style="margin-right: auto;margin-left: auto;width: 150px;
             height: 150px;"/>
         </section>
 
         <section id="right">
+        <br><br><br><br><br><br><br><br>
         <div class="circular_small">
             <br>
             {% if form.email.errors %}

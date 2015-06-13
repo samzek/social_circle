@@ -10,31 +10,35 @@
 			var num = Math.ceil( Math.random() * totalCount );
 			document.body.background = '/static/socialcircle/images/bg_images/'+ num+'.jpg';
 			document.body.style.backgroundSize = "cover";// Background repeat
-
 			}
 		</script>
 	</head>
 <body>
 
-    <h1 class="h1">Social circle</h1>
-    <form  method="POST">
-        {% csrf_token %}
-        <div class="circular_small">
-            <p>
-            <br><label>Username:</label>
-            <input type="text" name="username">
-            <label>Password:</label>
-            <input type="password" name="password"><br><br>
-            <input type="submit" name="log_in" value="Log in">
-            </p>
+    <div class="right" style="float: right">
+        <h1>Social</h1><h1> circle</h1>
+    </div>
+    <div class="left" style="margin-top: 5%">
+        <form  method="POST">
+            {% csrf_token %}
+            <div class="circular_small">
+                <p>
+                <br><label>Username:</label>
+                <input type="text" name="username">
+                <label>Password:</label>
+                <input type="password" name="password"><br><br>
+                <input type="submit" name="log_in" value="Log in">
+                </p>
 
-        </div>
-    </form>
-    <form method="POST">
-        {% csrf_token %}
-            <br><br><br>
-            <input class="menu" type="submit" name="sign" value="Sign in"/>
-    </form>
+            </div>
+        </form>
+        <form method="POST">
+            {% csrf_token %}
+                <br><br><br>
+                <input class="menu" type="submit" name="sign" value="Sign in"/>
+        </form>
+    </div>
+
 
 </body>
 	<script type="text/javascript">

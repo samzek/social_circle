@@ -110,3 +110,18 @@
 	bottom:0;
 	left:25%;
 }
+
+
+
+h1 {
+    color: antiquewhite;
+    text-shadow: 0 5px coral, 0 5px coral;
+    font-size: 90px;
+    line-height: 74px;
+    font-weight: 700;
+    margin: 0 5px 24px;
+    float: left;
+    padding: 10px;
+    margin: 0 5px 24px;
+    font-family: 'Libre Baskerville', serif;
+}
