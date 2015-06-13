@@ -82,6 +82,12 @@ def search(request):
     for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
             unknow_user_list.append(i)
 
+def create_room(user,friend,roomName):
+    f = SCUser.objects.get(username=friend)
+    room = ChatRoom.objects.create(name=roomName)
+    room.user.add(user.id)
+    room.user.add(f.id)
+    room.save()
 
 def index(request):
     """View di index che permette di effettuare il login o di accedere alla pagina di registrazione
@@ -293,6 +299,12 @@ def profile(request,scuser_id):
             return HttpResponseRedirect('')
         elif "all_friends" in request.POST:
             return HttpResponseRedirect("/socialcircle/profile/%s/friends" %scuser_id )
+        elif "chat" in request.POST:
+            roomName = request.user.username +"-"+user.username
+            room = ChatRoom.objects.filter(name=roomName)
+            if len(room) == 0:
+                create_room(request.user,user.username,roomName)
+            return HttpResponseRedirect("/socialcircle/dash/%s/chat_list/" %request.user.id)
 
     elif request.method == 'GET':
         return render(request,'socialcircle/profile.html',data )
@@ -406,13 +418,10 @@ def chat_list(request,scuser_id):
             return HttpResponseRedirect('/socialcircle/dash/%s/chat_list' %request.user.id)
         elif "newchat" in request.POST:
             friend = request.POST['newchat']
-            f = SCUser.objects.get(username=friend)
-            roomName = user.username + "-"+friend
-            print roomName
-            room = ChatRoom.objects.create(name=roomName)
-            room.user.add(user.id)
-            room.user.add(f.id)
-            room.save()
+            roomName = user.username +"-"+friend
+            room = ChatRoom.objects.filter(name=roomName)
+            if len(room) == 0:
+                create_room(user,friend,roomName)
         elif "logout" in request.POST:
             unknow_user_list = []
             logout(request)
