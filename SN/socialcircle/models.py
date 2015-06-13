@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
 
+#La classe SCUser e' la rappresentazione della nostra classe utente che va a sostituire la classe utente default di
+#django, garantendo maggiore flessibilita' nella gestione dell'utente e la possibilita' di estendere i normali campi
+#della clsse User
 class SCUser(AbstractBaseUser,PermissionsMixin):
 
     username = models.CharField(unique=True,max_length=20)
@@ -53,6 +56,9 @@ class SCUser(AbstractBaseUser,PermissionsMixin):
     def set_username (self,username):
         self.username = username
 
+#La classe Post ci gestisce le pubblicazioni di un certo utente. Essa e' in rapport ManyToMany con la classe SCUser
+#perche' e' prevista la possibilita' di condividere un certo post. Il contenuto di un post puo' essere testuale oppure
+#multimediale
 class Post (models.Model):
     post_date = models.DateTimeField(auto_now_add=True)
 
@@ -75,7 +81,7 @@ class Post (models.Model):
     def __unicode__(self):
         return 'Post ID: '+ str(self.id)
 
-
+#La classe like tiene traccia dei like che un certo utente ha inserito e a quali posts sono riferiti
 class Like (models.Model):
     like_date = models.DateTimeField(auto_now_add=True)
 
@@ -84,6 +90,9 @@ class Like (models.Model):
     def __unicode__(self):
         return unicode(self.like_date) + " | "+ self.like_user.username
 
+#La classe ChatRoom tiene traccia del nome della "stanza" e degli utenti che ne fanno parte. E' in relazione
+#ManyToMany con SCUser di modo da poter aver potenzialmente N utenti all'interno della stessa stanza. In realta' la view
+# e soprattuto il template ne limitano il potenziale non gestendo chat di gruppo ma solo chat composte da 2 SCUser.
 class ChatRoom(models.Model):
     name = models.CharField(max_length=200)
     user = models.ManyToManyField(SCUser)

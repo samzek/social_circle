@@ -9,10 +9,14 @@ from random import randint
 
 # Create your views here.
 
+
+#Funzione di supporto che permette di aggiungere un like a un certo post
 def addLike(request):
     sel_post = Post.objects.get(pk=request.POST['like_post'])
     new_like = Like.objects.create(like_post=sel_post, like_user=request.user)
     new_like.save()
+
+#Funzione che permette di togliere un like
 def deleteLike(request):
    # sel_post = Post.objects.get(pk=request.POST['unlike_post'])
     print "inside delete: ",request.POST['unlike_post']
@@ -20,6 +24,7 @@ def deleteLike(request):
     sel_like = Like.objects.filter(like_post=sel_post,like_user=request.user)
     sel_like.delete()
 
+#Funzione che permette di condividere un post
 def sharePost(request):
     sel_post = Post.objects.get(pk=request.POST['share'])
     p_t = sel_post.post_type
@@ -31,6 +36,7 @@ def sharePost(request):
     new_post.post_user.add(u)
     new_post.save()
 
+#Funzione che restituisce 3 amici a caso. E' utilizzata nella view profile.
 def get_three_friends(request,scuser_id):
 
     fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
@@ -52,6 +58,8 @@ def get_three_friends(request,scuser_id):
     return three_friends
 
 unknow_user_list = []
+
+#Effettua la ricerca di un certo utente e restituisce una lista dei risultati.
 def search(request):
     global unknow_user_list
     unknow_user_list = []
@@ -61,7 +69,7 @@ def search(request):
     for i in SCUser.objects.filter(first_name=first,last_name=second)[:]:
             unknow_user_list.append(i)
 
-
+#view di index che permette di effettuare il login o di accedere alla pagina di registrazione
 def index(request):
     if request.method == 'POST':
         if "log_in" in request.POST:
@@ -83,7 +91,7 @@ def index(request):
     return render(request,'socialcircle/index.html')
 
 
-
+#View della parte di registrazione al socialnetwork
 def reg(request):
     if request.method == 'POST':
         form = modifyUser(request.POST)
@@ -101,7 +109,9 @@ def reg(request):
 
 
 
-
+#Questa e' una delle view principale e gestiste l'intera interazione con la dashboard di un utente, in questa view
+#un utente puo' vedere i post degli amici in ordine cronologico, cercare altre persone, inserire post(multimediali e non),
+#entrare in una chat ed effettuare il logout. Questa view necessata un autenticazione obbligatoria per essere invocata.
 @decorators.login_required(login_url='/socialcircle/')
 def dash(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
@@ -117,9 +127,14 @@ def dash(request,scuser_id):
             tupla = (k,i)
             post.append(tupla)
     """
+
+    #ricerca degli amici del proprietario della attuale dashboard
     for i in SCUser.objects.filter(user=scuser_id)[:]:
         friend.append(i)
 
+    #Selezione dei post da visualizzare sulla dashboard, in ordine cronologico, e solo degli amici dell'utente attuale.
+    #l'idea non e' molto efficiente si potrebbe migliorare inserendo un meccanisco di scarico parziale di nuovi post e non
+    #di scarico completo al refresh della pagina
     #count = 0
     for k in Post.objects.filter()[:].order_by('-post_date')[:]:
         for i in k.post_user.all():
@@ -133,6 +148,8 @@ def dash(request,scuser_id):
         post_liked.append(request.user.like_set.values()[i].values()[3])
 
     #print post
+
+    #Gestione di tutte le richieste POST della dashboard
     if request.method == 'POST':
         if "logout" in request.POST or "logout_menu" in request.POST:
             unknow_user_list = []
@@ -188,6 +205,9 @@ def dash(request,scuser_id):
 
 
 
+#View dedicata alla gestion del profilo utente. Anch'essa necessita di essere loggati per poterla visualizzare. Ofre
+#alcune funzionalita' di gestione del profilo utente in caso siamo nella nostra pagina personale, ma anche funzionalita'
+#per interaggire attivamente se siamo nel profilo di un altra persona (aggiungere agli amici, ecc...).
 @decorators.login_required(login_url='/socialcircle/')
 def profile(request,scuser_id):
     global unknow_user_list
@@ -253,7 +273,7 @@ def profile(request,scuser_id):
         return render(request,'socialcircle/profile.html',data )
 
 
-
+#View dedicata alla gestione del proprio account da parte di un utente
 def settings(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
     if user.pk != request.user.id:
@@ -270,7 +290,7 @@ def settings(request,scuser_id):
 
 
 
-
+#View che gestisce la galleria fotografica di un particolare profilo
 def photos(request,scuser_id):
     p = True
     user = get_object_or_404(SCUser,pk=scuser_id)
@@ -284,7 +304,7 @@ def photos(request,scuser_id):
 
 
 
-
+#View che gestisce la galleria video di un particolare profilo
 def videos(request,scuser_id):
     p = False
     user = get_object_or_404(SCUser,pk=scuser_id)
@@ -296,7 +316,7 @@ def videos(request,scuser_id):
 
     return render(request,'socialcircle/gallery.html', {'fl_p':p,'scuser':user,'post':post_orderd})
 
-
+#View che gestisce l'elenco dei post a cui un certo utente ha messo "mi piace"
 def likes(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
     if user.pk != request.user.id:
@@ -311,6 +331,7 @@ def likes(request,scuser_id):
 
     return render(request,'socialcircle/likes.html', {'scuser':user, 'post_liked':post_liked})
 
+#View che mostra l'elenco di tutti gli attuali amici di un certo utente
 def friends(request,scuser_id):
     user = get_object_or_404(SCUser,pk=scuser_id)
     fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
@@ -319,6 +340,8 @@ def friends(request,scuser_id):
         return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
     return render(request,'socialcircle/friends.html', {'scuser':user, 'friends':fr})
 
+#View gestisce la visualizzazione delle chat attive di un certo utente e ne permette la creazione di nuovo.
+#Ogni chat e' vista come una chat room a se stante a cui possono accedere 2 persone.
 @decorators.login_required(login_url='/socialcircle/')
 def chat_list(request,scuser_id):
     global unknow_user_list
@@ -354,6 +377,7 @@ def chat_list(request,scuser_id):
 
     return render(request,'socialcircle/chat_list.html', context)
 
+#View che gestice la vera chat room e le funzionalita'.
 @decorators.login_required(login_url='/socialcircle/')
 def chat_room(request,scuser_id ,chat_room_id):
     global unknow_user_list
