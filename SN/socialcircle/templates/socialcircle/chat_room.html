@@ -1,0 +1,86 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}"
+      xmlns="http://www.w3.org/1999/html"/>
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/popup.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
+<html>
+<head>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script type="text/javascript" src="{% static 'jquery.gracefulWebSocket.js' %}"></script>
+ <script type="text/javascript">
+    $(document).ready( function() {
+    window.chat = {};
+    chat.ws = $.gracefulWebSocket("ws://127.0.0.1:1025/ws");
+    chat.send = function (message) {
+      chat.ws.send(message);
+    };
+
+    chat.ws.onmessage = function (event) {
+      var messageFromServer = event.data;
+      var list_element = document.createElement('li');
+      list_element.innerHTML = messageFromServer;
+      $("#message_list ul").prepend(list_element);
+    };
+
+    var inputBox = document.getElementById("inputbox");
+
+    inputbox.addEventListener("keydown", function(e) {
+      if (!e) { var e = window.event; }
+
+      if (e.keyCode == 13) { 
+        e.preventDefault(); // sometimes useful
+          var user = "{{ user.username }} wrote: <br>";
+          var message = inputBox.value;
+          var final = user.concat(message);
+          final = final.concat("<br><br>");
+        chat.send(final);
+        inputbox.value="";
+      }
+    }, false);
+
+    });
+ </script>
+</head>
+<section id="left">
+        <div class="sidebar pure-u-1 pure-u-md-1-4" >
+
+            <div class="dash-home">
+
+                <form  method="POST">
+                    {% csrf_token %}
+                    <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
+                        <img src="/static/socialcircle/images/profile.png" style="width: 48px;height: 48px;">
+                    </a>
+                    <input type="image" src="/static/socialcircle/images/logout.png" name="logout" value="Logout" style="width: 48px;height: 48px;">
+                </form>
+
+            </div>
+
+            <center>
+                    <a href="{% url 'socialcircle:profile' scuser_id=user.pk %}">
+                        <img src=" /static/{{ user.profile_image.url }}" class="circular"
+                             style="width: 220px;height: 220px;cursor: hand">
+
+                    </a>
+                <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
+
+                <label class="name_style" style="font-size: 10px">Insert possible friends here</label>
+            </center>
+
+        </div>
+</section>
+<section id="center" style="margin-top: 0%">
+    <h1> {{ chat.name }} </h1>
+    <div class="post" style="z-index: -1">
+        <div class="entry" style="z-index: -1">
+            <div id="message_list" class="quote" style="z-index: -1">
+              <ul style="list-style-type: none;">
+              </ul>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <center><textarea  class="txtarea" name="term" id="inputbox" cols="40" rows="4">Insert text here</textarea></center>
+    </div>
+</section>
+</html>

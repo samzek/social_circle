@@ -1,6 +1,7 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/style.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'socialcircle/Posts.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'socialcircle/popup.css' %}" />
 
 
 <body>
@@ -12,16 +13,75 @@
             <h1>Modify your personal information</h1>
         </div>
     </div>
-    <div class="content">
+    <div class="content" style="margin-left: 35%">
+
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            {{ form.as_p }}
 
-            <input type="submit" value="Save" />
+            <div style="background-color: peachpuff; width: 580px; height: 580px;
+                        line-height: 30px;  border-radius: 50%;text-align: center;">
+
+                    <br>
+                    {% if form.first_name.errors %}
+                        <label style="color: red">First name missed</label><br>
+                    {% else %}
+                        <label> First name</label><br>
+                    {% endif %}
+                    {{ form.first_name }}<br>
+
+                    {% if form.last_name.errors %}
+                        <label style="color: red">Last name missed</label><br>
+                    {% else %}
+                        <label> Last name</label><br>
+                    {% endif %}
+                    {{ form.last_name }}<br>
+                    {% if form.username.errors %}
+                        <label style="color: red">Username missed</label><br>
+                    {% else %}
+                        <label>Username</label><br>
+                    {% endif %}
+                    {{ form.username }}<br>
+
+                    {% if form.password.errors %}
+                        <label style="color: red">Password missed</label><br>
+                    {% else %}
+                        <label>Password</label><br>
+                    {% endif %}
+                    {{ form.password }}<br>
+
+                    {% if form.email.errors %}
+                        <label style="color: red">Email missed</label><br>
+                    {% else %}
+                         <label>Email</label><br>
+                    {% endif %}
+                    {{ form.email }}<br>
+
+                    {% if form.birth_date.errors %}
+                        <label style="color: red;">Birth_date missed</label><br>
+                    {% else %}
+                        <label>Birth_date</label><br>
+                    {% endif %}
+                    {{ form.birth_date }}<br>
+
+                    {% if form.address.errors %}
+                        <label style="color: red">Address missed</label><br>
+                    {% else %}
+                        <label>Address</label><br>
+                    {% endif %}
+                    {{ form.address }}<br>
+                    {{ form.user_bio.errors }}
+                    <label>Bio</label><br>
+                    {{ form.user_bio }}<br>
+
+                    <label>Profile Image</label><br>
+                    {{ form.profile_image }}<br><br><br>
+
+                <input type="submit" value="Save" class="action-button shadow animate red"/>
+
+            </div>
         </form>
     </div>
-
 </body>
 
 

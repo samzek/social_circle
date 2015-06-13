@@ -10,31 +10,37 @@
 }
 #textPost
 {
+
     height:380px;
     width:340px;
     margin:0 auto;
     position:relative;
     z-index:10;
     display:none;
-	background-color: white;
-	border:5px solid #cccccc;
+	background-color: peachpuff;
+	border:5px solid coral;
 	border-radius:10px;
 }
+
+
 #textPost:target, #textPost:target + #cover{
     display:block;
     opacity:2;
 }
 
+
+
+
 #photoPost
 {
     height:380px;
     width:340px;
-    margin:0 auto;
+    margin: 0 auto;
     position:relative;
     z-index:10;
     display:none;
-	background-color: white;
-	border:5px solid #cccccc;
+	background-color: peachpuff;
+	border:5px solid coral;
 	border-radius:10px;
 }
 #photoPost:target, #photoPost:target + #cover{
@@ -42,19 +48,64 @@
     opacity:2;
 }
 
+
 #videoPost
 {
     height:380px;
     width:340px;
-    margin:0 auto;
+    margin: 0 auto;
     position:relative;
     z-index:10;
     display:none;
-	background-color: white;
-	border:5px solid #cccccc;
+	background-color: peachpuff;
+	border:5px solid coral;
 	border-radius:10px;
 }
 #videoPost:target, #videoPost:target + #cover{
     display:block;
     opacity:2;
+}
+
+
+
+
+.animate
+{
+	transition: all 0.1s;
+	-webkit-transition: all 0.1s;
+}
+
+.action-button
+{
+	position: relative;
+	padding: 10px 20px;
+    margin: 0px 10px 10px 0px;
+	border-radius: 10px;
+	font-family: georgia, cursive;
+	font-size: 25px;
+	color: #FFF;
+	text-decoration: none;
+}
+
+.red
+{
+	background-color: coral;
+	border-bottom: 5px solid #BD3E31;
+	text-shadow: 0px -2px #BD3E31;
+}
+
+.action-button:active
+{
+	transform: translate(0px,5px);
+  -webkit-transform: translate(0px,5px);
+	border-bottom: 1px solid;
+}
+
+.title {
+    font-family: georgia, cursive;
+    color: coral;
+    text-shadow: 0px -2px white ;
+    font-size: 30px;
+    font-weight: bold;
+
 }

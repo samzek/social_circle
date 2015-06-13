@@ -156,7 +156,8 @@
                     <form method="POST">
                      {% csrf_token %}
                     <ul>
-                        <li><a><span><img src="/static/socialcircle/images/chat_small.png"></span></a></li>
+                        <li><a><span><input type="image" src="/static/socialcircle/images/chat_small.png"
+                                name="chats" value="chats"></span></a></li>
                         <li><a href="#videoPost"><span><img src="/static/socialcircle/images/video_small.png"></span></a></li>
                         <li><a href="#textPost"><span><img src="/static/socialcircle/images/text_small.png" ></span></a></li>
                         <li><a href="#photoPost"><span><img src="/static/socialcircle/images/camera_small.png"></span></a></li>
@@ -171,17 +172,17 @@
     <div id="textPost" >
         <center>
             <br><br>
-            <p><label class="name_style"> Insert a post </label></p>
+            <p><label class="title"> Insert a post </label></p>
             <br><br><br><br>
 
             <form  action="{% url 'socialcircle:dash' scuser_id=user.pk %}" method="POST">
                 {% csrf_token %}
-                <textarea name="text_post" value="" style="width: 80%;height: 100px"></textarea>
+                <textarea name="text_post" value="" style="width: 80%;height: 100px;border-radius: 10px"></textarea>
 
                 <p>
                     <br><br>
-                    <input type = "submit" name="submit_text" value = "Submit" >
-                    <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
+                    <input type = "submit" name="submit_text" value = "Submit" class="action-button shadow animate red">
+                    <a href=""> <input type = "button" name="cancel" value = "Cancel" class="action-button shadow animate red"></a>
                 </p>
             </form>
         </center>
@@ -191,18 +192,21 @@
     <div id="photoPost" >
         <center>
             <br><br>
-            <p><label class="name_style"> Insert a post </label></p>
+            <p><label class="title"> Insert a post </label></p>
             <br><br><br><br>
 
             <form method="POST" action="{% url 'socialcircle:dash' scuser_id=user.pk %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.file.errors }}
-                    {{ form.file }}
+                <div style="margin-left:15%;color: #000000">
+                    {{ form.file.errors}}
+                        {{ form.file }}
+                </div>
+                <br><br>
                 {{ form.file.errors }}
                     {{ form.content }}
                     <br><br>
-                    <input type = "submit" name="submit_photo" value = "Submit" >
-                    <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
+                    <input type = "submit" name="submit_photo" value = "Submit" class="action-button shadow animate red">
+                    <a href=""> <input type = "button" name="cancel" value = "Cancel" class="action-button shadow animate red" ></a>
                 </p>
             </form>
         </center>
@@ -212,20 +216,23 @@
     <div id="videoPost" >
         <center>
             <br><br>
-            <p><label class="name_style"> Insert a post </label></p>
+            <p><label class="title"> Insert a post </label></p>
             <br><br><br><br>
 
             <form method="POST" action="{% url 'socialcircle:dash' scuser_id=user.pk %}"    enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.file.errors }}
-                    {{ form.file }}
+                <div style="margin-left:15%;color: #000000">
+                    {{ form.file.errors }}
+                        {{ form.file }}
+                </div>
+                <br><br>
                 {{ form.file.errors }}
                     {{ form.content }}
 
                 <p>
                     <br><br>
-                    <input type = "submit" name="submit_video" value = "Submit" >
-                    <a href=""> <input type = "button" name="cancel" value = "Cancel" ></a>
+                    <input type = "submit" name="submit_video" value = "Submit" class="action-button shadow animate red">
+                    <a href=""> <input type = "button" name="cancel" value = "Cancel" class="action-button shadow animate red"></a>
                 </p>
             </form>
         </center>

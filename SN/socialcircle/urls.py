@@ -3,6 +3,7 @@
 
 from django.conf.urls import url
 from . import views
+
 urlpatterns = [
         url(r'^$', views.index, name='index'),
         url(r'^dash/(?P<scuser_id>[0-9]+)/$', views.dash, name='dash'),
@@ -12,6 +13,8 @@ urlpatterns = [
         url(r'^profile/(?P<scuser_id>[0-9]+)/videos/$', views.videos,name='videos'),
         url(r'^profile/(?P<scuser_id>[0-9]+)/likes/$', views.likes,name='likes'),
         url(r'^profile/(?P<scuser_id>[0-9]+)/friends/$', views.friends,name='friends'),
-        url(r'^reg/$',views.reg,name='reg')
+        url(r'^reg/$',views.reg,name='reg'),
+        url(r'^dash/(?P<scuser_id>[0-9]+)/chat_list/$', views.chat_list, name='chat_list'),
+        url(r'^dash/(?P<scuser_id>[0-9]+)/chat_list/(?P<chat_room_id>\d+)/$', views.chat_room, name='chat_room'),
 ]
 
