@@ -19,7 +19,41 @@
       var messageFromServer = event.data;
       var list_element = document.createElement('li');
       list_element.innerHTML = messageFromServer;
-      $("#message_list ul").prepend(list_element);
+      var name = messageFromServer.split(" ")[0];
+        var sect = document.getElementById("center");
+        var post = document.createElement("div");
+        post.className = "post";
+        post.style.zIndex = "-1";
+        var entry = document.createElement("div");
+        entry.className = "entry";
+        entry.style.zIndex = "-1";
+        entry.style.border = "0px";
+        var quote = document.createElement("div");
+        quote.className = "quote";
+        quote.style.zIndex ="-1";
+        sect.appendChild(post);
+        post.appendChild(entry);
+        entry.appendChild(quote);
+        var label = document.createElement("label");
+        label.style.listStyleType = "none";
+        //label.style.width = "400px";
+
+        $(label).append(list_element);
+        //label.value = messageFromServer;
+        quote.appendChild(label);
+
+        if (name == "{{ user.username }}"){
+            entry.style.background = "antiquewhite";
+            label.style.background = "antiquewhite";
+            entry.scrollIntoView()
+
+        }
+        else{
+            entry.style.background = "aquamarine";
+            label.style.background = "aquamarine";
+            entry.scrollIntoView()
+        }
+      //$("#message_list label").prepend(list_element);
     };
 
     var inputBox = document.getElementById("inputbox");
@@ -32,7 +66,7 @@
           var user = "{{ user.username }} wrote: <br>";
           var message = inputBox.value;
           var final = user.concat(message);
-          final = final.concat("<br><br>");
+          //final = final.concat("");
         chat.send(final);
         inputbox.value="";
       }
@@ -62,7 +96,7 @@
                              style="width: 220px;height: 220px;cursor: hand">
 
                     </a>
-                <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
+                <label class="name_style">{{user.first_name | capfirst }} {{user.last_name | capfirst }}</label><br>
 
                 <label class="name_style" style="font-size: 10px">Insert possible friends here</label>
             </center>
@@ -71,14 +105,6 @@
 </section>
 <section id="center" style="margin-top: 0%">
     <h1> {{ chat.name }} </h1>
-    <div class="post" style="z-index: -1">
-        <div class="entry" style="z-index: -1">
-            <div id="message_list" class="quote" style="z-index: -1">
-              <ul style="list-style-type: none;">
-              </ul>
-            </div>
-        </div>
-    </div>
     <div id="footer">
         <center><textarea  class="txtarea" name="term" id="inputbox" cols="40" rows="4">Insert text here</textarea></center>
     </div>

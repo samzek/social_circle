@@ -103,12 +103,12 @@
     z-index: 10;
 }
 #footer {
-	background:white;
-	width:50%;
+	background: white;
+	width: 45px;
 	height:80px;
 	position: fixed;
 	bottom:0;
-	left:25%;
+	left:75%;
 }
 
 

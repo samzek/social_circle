@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | Social Circle Administration{% endblock %}
+
+{% block extrastyle %}
+    <style>
+    #header{
+        background-color: coral;
+        font-family: georgia;
+
+    }
+
+    #branding h1, #branding h1 a:link, #branding h1 a:visited{
+        color: white;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    #user-tools{
+        font-size: 13px;
+    }
+
+    #content{
+        font-family: georgia;
+    }
+
+    .module h2, .module caption, .inline-group h2 {
+        font-size: 20px;
+        background: coral;
+    }
+
+    a:link, a:visited{
+        color: orangered;
+    }
+
+    body{
+        background: peachpuff;
+    }
+
+    .module{
+        border-radius: 15px;
+        -moz-border-radius: 15px
+        -webkit-border-radius: 15px;
+        overflow: hidden; /*notice*/
+    }
+
+
+    </style>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index'%}">Social Circle Administration</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
