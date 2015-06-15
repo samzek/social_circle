@@ -29,9 +29,19 @@
             <input type="image" src="/static/socialcircle/images/friends.png" name="all_friends" value="All_friends" style="width: 48px;height: 48px;">
         </form>
 
-        <h3>Wanna add new friends?</h3>
 
-        <p>Insert possible friends here</p>
+
+        {% if scuser.id == curr_user.id %}
+                <h3>Wanna add new friends?</h3>
+                {% for i in new_friends %}
+                    <a href="/socialcircle/profile/{{ i.id }}/"  > <img src="/static/{{ i.profile_image.url }}"  style="width: 48px;height: 48px;border-radius: 50%;"></a>
+                {% endfor %}
+
+        {% endif %}
+
+
+
+
 
     </div>
 </div>
