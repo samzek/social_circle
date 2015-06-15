@@ -25,7 +25,11 @@
                     </a>
                 <label class="name_style">{{scuser.first_name | capfirst }} {{scuser.last_name | capfirst }}</label><br>
 
-                <label class="name_style" style="font-size: 10px">Insert possible friends here</label>
+                <br><br>
+                <h3>Wanna add new friends?</h3>
+                {% for i in new_friends %}
+                    <a href="/socialcircle/profile/{{ i.id }}/"  > <img src="/static/{{ i.profile_image.url }}"  style="width: 48px;height: 48px;border-radius: 50%;"></a>
+                {% endfor %}
             </center>
 
         </div>

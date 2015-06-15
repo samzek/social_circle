@@ -46,11 +46,11 @@ def sharePost(request):
     new_post.save()
 
 
-def get_three_friends(request,scuser_id):
+def get_three_friends(request,scuser_id,fr):
     """Funzione che restituisce 3 amici a caso. E' utilizzata nella view profile.
     """
 
-    fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
+    #fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
 
     three_friends = []
     if len(fr) < 4:
@@ -63,8 +63,6 @@ def get_three_friends(request,scuser_id):
         three_friends.append(fr[s.pop()])
         three_friends.append(fr[s.pop()])
         three_friends.append(fr[s.pop()])
-
-        print three_friends
 
     return three_friends
 
@@ -146,12 +144,9 @@ def dash(request,scuser_id):
     friend = []
     global unknow_user_list
 
-    """
-    for i in SCUser.objects.filter(user=scuser_id)[:]:
-        for k in Post.objects.filter(post_user=i.pk)[:].order_by('-post_date')[:2]:
-            tupla = (k,i)
-            post.append(tupla)
-    """
+
+    new_fr = SCUser.objects.exclude(user=scuser_id)
+    three_new_friends = get_three_friends(request,scuser_id,new_fr)
 
     """ricerca degli amici del proprietario della attuale dashboard
     """
@@ -227,7 +222,8 @@ def dash(request,scuser_id):
         elif "chats" in request.POST:
             return HttpResponseRedirect('chat_list/')
     form = insertFile()
-    data = {'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list, 'form':form}
+    data = {'scuser':user,'post':post,'post_liked' : post_liked,'unknow':unknow_user_list,
+            'form':form, 'new_friends':three_new_friends}
     return render(request,'socialcircle/dashboard.html', data)
 
 
@@ -241,6 +237,12 @@ def profile(request,scuser_id):
     per interaggire attivamente se siamo nel profilo di un altra persona (aggiungere agli amici, ecc...).
     """
 
+
+    new_fr = SCUser.objects.exclude(user=scuser_id)
+    three_new_friends = get_three_friends(request,scuser_id,new_fr)
+    print three_new_friends
+
+
     global unknow_user_list
     user = get_object_or_404(SCUser,pk=scuser_id)
 
@@ -249,7 +251,8 @@ def profile(request,scuser_id):
         friend_list.append(i.pk)
 
 
-    three_friends= get_three_friends(request,scuser_id)
+    t_fr = SCUser.objects.filter(user=scuser_id).exclude(pk=scuser_id)[:]
+    three_friends= get_three_friends(request,scuser_id,t_fr)
     #TODO creare una lista con i tre amici da visualizzare nella pagina del profilo
 
     post_liked = []
@@ -258,7 +261,8 @@ def profile(request,scuser_id):
 
     post_orderd = user.post_set.order_by('-post_date')[:]
 
-    data = {'scuser':user, 'post': post_orderd, 'post_liked' : post_liked, 'curr_user':request.user, 'friends':friend_list,'three':three_friends}
+    data = {'scuser':user, 'post': post_orderd, 'post_liked' : post_liked, 'curr_user':request.user,
+            'friends':friend_list,'three':three_friends, 'new_friends':three_new_friends}
 
     if request.method == 'POST':
         if "photos" in request.POST:
@@ -319,10 +323,15 @@ def settings(request,scuser_id):
     if user.pk != request.user.id:
         return HttpResponseRedirect('/socialcircle/profile/%s/settings' %request.user.id)
 
+    password = user.password
+
     if request.method == 'POST':
         form = modifyUser(request.POST,request.FILES,instance=user)
         if form.is_valid():
-            form.save()
+            new_user = form.save(commit=False)
+            if password != new_user.password:
+                new_user.password = hashers.make_password(new_user.password,salt=None,hasher='default')
+            new_user.save()
             return HttpResponseRedirect('/socialcircle/profile/%s' %scuser_id,{'scuser':user} )
     else:
         form = modifyUser(instance=user)
@@ -399,6 +408,10 @@ def chat_list(request,scuser_id):
     Ogni chat e' vista come una chat room a se stante a cui possono accedere 2 persone.
     """
 
+    new_fr = SCUser.objects.exclude(user=scuser_id)
+    three_new_friends = get_three_friends(request,scuser_id,new_fr)
+
+
     global unknow_user_list
     user = get_object_or_404(SCUser,pk=scuser_id)
     if user.pk != request.user.id:
@@ -409,11 +422,10 @@ def chat_list(request,scuser_id):
         'chat_list': chat_rooms,
         'scuser':user,
         'unknow':unknow_user_list,
+        'new_friends':three_new_friends,
     }
     if request.method == 'POST':
-        print "POST"
         if "res_user" in request.POST:
-            print "inside res"
             search(request)
             return HttpResponseRedirect('/socialcircle/dash/%s/chat_list' %request.user.id)
         elif "newchat" in request.POST:
