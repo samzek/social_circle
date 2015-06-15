@@ -16,32 +16,38 @@
     };
 
     chat.ws.onmessage = function (event) {
-      var messageFromServer = event.data;
-      var list_element = document.createElement('li');
-      list_element.innerHTML = messageFromServer;
-      var name = messageFromServer.split(" ")[0];
-        var sect = document.getElementById("center");
-        var post = document.createElement("div");
-        post.className = "post";
-        post.style.zIndex = "-1";
-        var entry = document.createElement("div");
-        entry.className = "entry";
-        entry.style.zIndex = "-1";
-        entry.style.border = "0px";
-        var quote = document.createElement("div");
-        quote.className = "quote";
-        quote.style.zIndex ="-1";
-        sect.appendChild(post);
-        post.appendChild(entry);
-        entry.appendChild(quote);
-        var label = document.createElement("label");
-        label.style.listStyleType = "none";
-        //label.style.width = "400px";
+        var messageFromServer = event.data;
+        var list_element = document.createElement('li');
+        list_element.innerHTML = messageFromServer;
+        var name = messageFromServer.split(" ")[0];
 
-        $(label).append(list_element);
-        //label.value = messageFromServer;
-        quote.appendChild(label);
+        if (name != "{{ user.username }}" && name != "connected") {
+            var sect = document.getElementById("center");
+            var post = document.createElement("div");
+            post.className = "post";
+            post.style.zIndex = "-1";
+            var entry = document.createElement("div");
+            entry.className = "entry";
+            entry.style.zIndex = "-1";
+            entry.style.border = "0px";
+            var quote = document.createElement("div");
+            quote.className = "quote";
+            quote.style.zIndex = "-1";
+            sect.appendChild(post);
+            post.appendChild(entry);
+            entry.appendChild(quote);
+            var label = document.createElement("label");
+            label.style.listStyleType = "none";
+            entry.style.background = "aquamarine";
+            $(label).append(list_element);
+            entry.scrollIntoView();
+            //label.style.width = "400px";
 
+            //$(label).append(list_element);
+            //label.value = messageFromServer;
+            quote.appendChild(label);
+        }
+        /*
         if (name == "{{ user.username }}"){
             entry.style.background = "antiquewhite";
             label.style.background = "antiquewhite";
@@ -51,8 +57,9 @@
         else{
             entry.style.background = "aquamarine";
             label.style.background = "aquamarine";
+            $(label).append(list_element);
             entry.scrollIntoView()
-        }
+        }*/
       //$("#message_list label").prepend(list_element);
     };
 
@@ -63,11 +70,11 @@
 
       if (e.keyCode == 13) { 
         e.preventDefault(); // sometimes useful
-          var user = "{{ user.username }} wrote: <br>";
+          var user = "{{ user.username }} <br>";
           var message = inputBox.value;
           var final = user.concat(message);
-          //final = final.concat("");
-        chat.send(final);
+          chat.send(final);
+          document.getElementById("term_hide").click();
         inputbox.value="";
       }
     }, false);
@@ -105,8 +112,34 @@
 </section>
 <section id="center" style="margin-top: 0%">
     <h1> {{ chat.name }} </h1>
+    {% for m,u in message %}
+        <div class="post" style="z-index: -1">
+            {% if u.username == user.username %}
+                <div class="entry" style="z-index: -1;">
+                    <div class="quote" style="z-index: -1;">
+                        {{ u.username }}<br>
+                        {{ m.mex }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="entry" style="z-index: -1;background-color: aquamarine;border:0px;">
+                    <div class="quote" style="z-index: -1;">
+                        {{ u.username }}<br>
+                        {{ m.mex }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <script>
+        window.scrollTo(0,document.body.scrollHeight);
+    </script>
     <div id="footer">
-        <center><textarea  class="txtarea" name="term" id="inputbox" cols="40" rows="4">Insert text here</textarea></center>
+        <form method="POST">
+            {% csrf_token %}
+            <center><textarea  class="txtarea" name="term" id="inputbox" cols="40" rows="4">Insert text here</textarea></center>
+            <input type="submit" name="term_hidden" id="term_hide" value="send" style="visibility: hidden">
+        </form>
     </div>
 </section>
 </html>

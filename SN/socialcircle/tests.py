@@ -19,6 +19,7 @@ class IndexViewTests(TestCase):
         self.assertEqual(response.status_code,301)
     def test_login(self):
         client = Client()
-        response = client.get(reverse('socialcircle:index'))
-        self.assertEqual()
+        usr = create_users()
+        response = client.get(reverse('socialcircle:dash'))
+        self.assertEqual(response.status_code,200)
 

@@ -111,3 +111,11 @@ class ChatRoom(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Crono_chat(models.Model):
+    """Questa classe si occupa di mantenere una cronologia della chat in una certa chatRoom
+    """
+    mex = models.CharField(max_length=300)
+    chatRoom = models.ForeignKey(ChatRoom)
+    receiver  = models.ForeignKey(SCUser,related_name="receiver")
+    sender = models.ForeignKey(SCUser,related_name="sender")

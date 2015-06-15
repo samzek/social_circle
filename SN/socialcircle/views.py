@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,render_to_response,RequestContext
 from django.http import HttpRequest,HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate,login,hashers,decorators,logout
-from .models import SCUser,Post,Like,ChatRoom
+from .models import SCUser,Post,Like,ChatRoom,Crono_chat
 
 from django.core.urlresolvers import reverse
 from forms import modifyUser, insertFile
@@ -434,10 +434,19 @@ def chat_list(request,scuser_id):
 def chat_room(request,scuser_id ,chat_room_id):
     """View che gestice la vera chat room e le funzionalita'.
     """
-
     global unknow_user_list
     chat = get_object_or_404(ChatRoom, pk=chat_room_id)
     user = get_object_or_404(SCUser,pk=scuser_id)
+
+    for i in chat.user.all():
+        if i != scuser_id:
+            friend = i
+
+    message = []
+    for i in Crono_chat.objects.filter(chatRoom=chat_room_id)[:]:
+        print "inside for",i.mex
+        message.append((i,i.sender))
+
 
     if user.id != request.user.id:
         return HttpResponseRedirect('/socialcircle/dash/%s/' %request.user.id)
@@ -447,8 +456,13 @@ def chat_room(request,scuser_id ,chat_room_id):
                 unknow_user_list = []
                 logout(request)
                 return HttpResponseRedirect('/socialcircle/')
+        elif "term" in request.POST:
+                message = request.POST['term']
+                msg = Crono_chat.objects.create(mex=message,chatRoom=chat,sender=user,receiver=friend)
+                msg.save()
+                return HttpResponseRedirect('')
     #print "obj",chat
-    return render(request, 'socialcircle/chat_room.html', {'chat': chat,'user':user})
+    return render(request, 'socialcircle/chat_room.html', {'chat': chat,'user':user,'message':message})
 
 def longpoll_chat_room(request, chat_room_id):
     chat = get_object_or_404(ChatRoom, pk=chat_room_id)
