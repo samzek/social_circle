@@ -134,10 +134,12 @@
     <script>
         window.scrollTo(0,document.body.scrollHeight);
     </script>
+
     <div id="footer">
+        Insert text here
         <form method="POST">
             {% csrf_token %}
-            <center><textarea  class="txtarea" name="term" id="inputbox" cols="40" rows="4">Insert text here</textarea></center>
+            <center><textarea  class="txtarea" name="term" id="inputbox" cols="40" rows="4"></textarea></center>
             <input type="submit" name="term_hidden" id="term_hide" value="send" style="visibility: hidden">
         </form>
     </div>

@@ -456,7 +456,6 @@ def chat_room(request,scuser_id ,chat_room_id):
 
     message = []
     for i in Crono_chat.objects.filter(chatRoom=chat_room_id)[:]:
-        print "inside for",i.mex
         message.append((i,i.sender))
 
 
