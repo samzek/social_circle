@@ -18,8 +18,13 @@ class LikeAdmin(admin.ModelAdmin):
     list_display = ('id','like_date','like_user','like_post')
     list_filter = ['like_date']
 
+class CronoChatAdmin(admin.ModelAdmin):
+    list_display = ('sender','chatRoom','mex')
+
+
+
 admin.site.register(SCUser, SCUserAdmin)
 admin.site.register(Post,PostAdmin)
 admin.site.register(Like,LikeAdmin)
 admin.site.register(ChatRoom)
-admin.site.register(Crono_chat)
+admin.site.register(Crono_chat,CronoChatAdmin)
