@@ -204,3 +204,48 @@ class DashViewTests(TestCase):
 
 
 
+class ProfileViewTest(TestCase):
+
+    def test_like_own_posts(self):
+        client = Client()
+        usr1 = create_usr1()
+        usr1.user.add(usr1)
+
+        post1 = create_post1()
+        post1.post_user.add(usr1)
+
+        response_1 = client.post(reverse('socialcircle:index'),{'username':usr1.username,'password':"Sam",'log_in':"log_in"})
+        response_2 = client.post(reverse('socialcircle:profile', kwargs={'scuser_id': usr1.id}),
+                                 {'like_post':post1.id})
+        response = client.get(reverse('socialcircle:profile', kwargs={'scuser_id': usr1.id}),follow=True)
+
+        self.assertEqual(response.context['post_liked'],[post1.id])
+
+
+    def test_delete_own_posts(self):
+        client = Client()
+        usr1 = create_usr1()
+        usr1.user.add(usr1)
+
+        post1 = create_post1()
+        post1.post_user.add(usr1)
+
+
+        response_1 = client.post(reverse('socialcircle:index'),{'username':usr1.username,'password':"Sam",'log_in':"log_in"})
+        response_2 = client.post(reverse('socialcircle:profile', kwargs={'scuser_id': usr1.id}),
+                                 {'delete_post':post1.id})
+
+        response = client.get(reverse('socialcircle:profile', kwargs={'scuser_id': usr1.id}),follow=True)
+
+        self.assertQuerysetEqual(response.context['post'],[])
+
+    def test_redirect_photo_gallery(self):
+        client = Client()
+        usr1 = create_usr1()
+        usr1.user.add(usr1)
+
+        response_1 = client.post(reverse('socialcircle:index'),{'username':usr1.username,'password':"Sam",'log_in':"log_in"})
+        response_2 = client.get(reverse('socialcircle:profile', kwargs={'scuser_id': usr1.id}),follow=True)
+        response = client.post(reverse('socialcircle:profile',kwargs={'scuser_id':usr1.id}),{'photos':"photos"})
+
+        self.assertEqual(response.status_code,302)
